@@ -5,9 +5,8 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import "./App.css";
-import Root from "./routes/root"
-import 'bootstrap/dist/css/bootstrap.css'
-
+import Root from "./routes/root";
+import 'bootstrap/dist/css/bootstrap.min.css' 
 
 
 const router = createBrowserRouter([
