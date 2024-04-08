@@ -7,6 +7,7 @@ import {
 import "./App.css";
 import Root from "./routes/root"
 import 'bootstrap/dist/css/bootstrap.css'
+import Client from "./routes/client";
 
 
 
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <div> <Root />, </div>,
+  },
+  {
+    path: "client/",
+    element: <div> <Client /> </div>
   },
 ]);
 
