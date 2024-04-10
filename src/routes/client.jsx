@@ -2,7 +2,7 @@ export default function Client() {
     return (
       
       <>
-
+    <div class="container">
       <div class="navbar">
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
           <div class="container-fluid">
@@ -30,11 +30,16 @@ export default function Client() {
           </div>
         </nav>
         </div>
-      <main class="container">
-        <div class="form-signin bg-light p-5 rounded">      
-          <h1>1_1</h1>
+        <div class="cont">
+        <h2>Виды услуг и направления</h2>
+          <div class="btn-group w-100" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-primary ">Лефт</button>
+            <button type="button" class="btn btn-primary ">Middle</button>
+            <button type="button" class="btn btn-primary ">Right</button>
+          </div>
         </div>
-      </main>
+    </div>
+
         </>
     )
 }

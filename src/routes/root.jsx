@@ -5,7 +5,6 @@ export default function Root() {
   <link href="sign-in.css" rel="stylesheet"/>
   return (
     <>
-
     <div class="wrapper">
     <h1 class="h3 mb-3 fw-normal">Вход в аккаунт</h1>
     <div class="form-floating">
