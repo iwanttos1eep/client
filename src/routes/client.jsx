@@ -41,24 +41,29 @@ export default function Client() {
   </div>
   
 </nav>
-      <h2>Виды услуг и направления</h2>
-
-<div class="large-buttons">
   <div class="container">
-    <div class="buttons-holder">
+    <h2>Виды услуг и направления</h2>
 
-      <div class="d-grid gap-2">
-      <button type="button" class="btn btn-primary">Primary</button>
+    
+      <div class="container">
+        <div class="buttons-holder">
+
+          <div class="btn-xl d-grid gap-2 col-4">
+          <button type="button" class="btn btn-primary">Купить абонемент</button>
+          </div>
+          <div class="btn-xl d-grid gap-2 col-4">
+          <button type="button" class="btn btn-primary"><br></br><br></br><br></br>Групповые занятия<br></br><br></br><br></br><br></br></button>
+          </div>
+          <div class="btn-xl d-grid gap-2 col-4">
+          <button type="button" class="btn btn-primary">Персональные тренировки</button>
+          </div>
+        </div>
+        <div class="btn-xl d-grid gap-2">
+          <button type="button" class="btn btn-primary"><br></br>Купить абонемент<br></br><br></br></button>
+          </div>
       </div>
-      <div class="d-grid gap-2 col-6">
-      <button type="button" class="btn btn-primary">Primary</button>
-      </div>
-      <div class="d-grid gap-2 col-6">
-      <button type="button" class="btn btn-primary">Primary</button>
-      </div>
-    </div>
+    <h2><br></br>Прайс-лист</h2>
   </div>
-</div>
       </>
     )
 }

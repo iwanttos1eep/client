@@ -67,3 +67,7 @@ body {
   display: flex;
   justify-content: space-between;
 }
+
+.btn-xl {
+  padding: 10px 20px;
+}

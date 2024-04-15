@@ -5,6 +5,7 @@ export default function Root() {
   <link href="sign-in.css" rel="stylesheet"/>
   return (
     <>
+    <form action="" method="get">
     <div class="wrapper">
     <h1 class="h3 mb-3 fw-normal">Вход в аккаунт</h1>
     <div class="form-floating">
@@ -19,6 +20,7 @@ export default function Root() {
         </div>
         <Link to="/client"><button class="w-100 btn btn-lg btn-primary" type="submit">Войти</button></Link><p class="mt-5 mb-3 text-muted"></p>
       </div>
+      </form>
       </>
   )
 }
