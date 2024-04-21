@@ -1,22 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '../../components/feature/Header';
-import {
-  Button,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Container,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, Container, Stack, Tab, Tabs, Typography } from '@mui/material';
 import buySubscriptionImage from '../../images/buy_subscription.jpg';
 import groupTrainingImage from '../../images/group_training_sessions.jpg';
 import personalTrainingImage from '../../images/personal_training_sessions.jpg';
-import ServiceCard from './ServiceCard';
+import TabPanel from '../../components/core/TabPanel';
+import ServiceCard from './components/ServiceCard';
+import SubscriptionTab from './components/SubscriptionTab';
 
 const HomePage = () => {
+  const [tabIndex, setTabIndex] = useState<number>(0);
+
   return (
     <Stack>
       <Header
@@ -67,39 +61,39 @@ const HomePage = () => {
               />
             </Stack>
 
-            {/* <div className="container">
-          <div className="buttons-holder">
-            <div className="btn-xl d-grid gap-2 col-4">
-              <button type="button" className="btn btn-primary">
-                Купить абонемент
-              </button>
-            </div>
-            <div className="btn-xl d-grid gap-2 col-4">
-              <button type="button" className="btn btn-primary">
-                <br></br>
-                <br></br>
-                <br></br>Групповые занятия<br></br>
-                <br></br>
-                <br></br>
-                <br></br>
-              </button>
-            </div>
-            <div className="btn-xl d-grid gap-2 col-4">
-              <button type="button" className="btn btn-primary">
-                Персональные тренировки
-              </button>
-            </div>
-          </div>
-          <div className="btn-xl d-grid gap-2">
-            <button type="button" className="btn btn-primary">
-              <br></br>Купить абонемент<br></br>
-              <br></br>
-            </button>
-          </div>
-        </div>
-        <h2>
-          <br></br>Прайс-лист
-        </h2> */}
+            <Typography variant="h5" fontWeight="bold">
+              Прайс-лист
+            </Typography>
+
+            <Box
+              sx={{
+                flexGrow: 1,
+                bgcolor: 'background.paper',
+                display: 'flex',
+              }}
+            >
+              <Tabs
+                orientation="vertical"
+                variant="scrollable"
+                value={tabIndex}
+                onChange={(_, index) => setTabIndex(index)}
+                aria-label="Vertical tabs example"
+                sx={{ borderRight: 1, borderColor: 'divider' }}
+              >
+                <Tab label="КУПИТЬ АБОНЕМЕНТ" />
+                <Tab label="ГРУППОВЫЕ ЗАНЯТИЯ" />
+                <Tab label="ПЕРСОНАЛЬНЫЕ ТРЕНИРОВКИ" />
+              </Tabs>
+              <TabPanel value={tabIndex} index={0}>
+                <SubscriptionTab />
+              </TabPanel>
+              <TabPanel value={tabIndex} index={1}>
+                <SubscriptionTab />
+              </TabPanel>
+              <TabPanel value={tabIndex} index={2}>
+                <SubscriptionTab />
+              </TabPanel>
+            </Box>
           </Stack>
         </Container>
       </Stack>
