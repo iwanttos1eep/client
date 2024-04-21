@@ -1,45 +1,73 @@
 import React from 'react';
+import Header from '../../components/feature/Header';
+import {
+  Button,
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Container,
+  Stack,
+  Typography,
+} from '@mui/material';
+import buySubscriptionImage from '../../images/buy_subscription.jpg';
+import groupTrainingImage from '../../images/group_training_sessions.jpg';
+import personalTrainingImage from '../../images/personal_training_sessions.jpg';
+import ServiceCard from './ServiceCard';
 
 const HomePage = () => {
   return (
-    <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-body-tertiary">
-        <div className="container-fluid">
-          <button
-            data-mdb-collapse-init
-            className="navbar-toggler"
-            type="button"
-            data-mdb-target="#navbarCenteredExample"
-            aria-controls="navbarCenteredExample"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <i className="fas fa-bars"></i>
-          </button>
+    <Stack>
+      <Header
+        headerLogo={{
+          title: 'Главная',
+          onClick() {},
+        }}
+        navItems={[
+          {
+            title: 'О нас',
+            onClick() {},
+          },
+          {
+            title: 'Мой профиль',
+            onClick() {},
+          },
+          {
+            title: 'выйти',
+            onClick() {},
+          },
+        ]}
+      />
+      <Stack marginTop="1rem">
+        <Container>
+          <Stack gap="1rem">
+            <Typography variant="h5" fontWeight="bold">
+              Виды услуг и направления
+            </Typography>
+            <Stack direction="row" gap="1rem" justifyContent="space-between">
+              <ServiceCard
+                image={buySubscriptionImage}
+                onCardClick={() => {}}
+                title="Купить абонемент"
+                subTitle="Станьте членом нашего клуба, занимайтесь на лучших
+                тренировочных аппаратах"
+              />
+              <ServiceCard
+                image={groupTrainingImage}
+                onCardClick={() => {}}
+                title="Групповые занятия"
+                subTitle="Тренировки с единомышленниками"
+              />
+              <ServiceCard
+                image={personalTrainingImage}
+                onCardClick={() => {}}
+                title="Персональные тренировки"
+                subTitle="Станьте сильнее с нашими специалистами"
+              />
+            </Stack>
 
-          <div
-            className="collapse navbar-collapse justify-content-center"
-            id="navbarCenteredExample"
-          >
-            <ul className="navbar-nav mb-2 mb-lg-0">
-              <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#">
-                  ГЛАВНАЯ
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  О НАС
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-      <div className="container">
-        <h2>Виды услуг и направления</h2>
-
-        <div className="container">
+            {/* <div className="container">
           <div className="buttons-holder">
             <div className="btn-xl d-grid gap-2 col-4">
               <button type="button" className="btn btn-primary">
@@ -71,9 +99,11 @@ const HomePage = () => {
         </div>
         <h2>
           <br></br>Прайс-лист
-        </h2>
-      </div>
-    </>
+        </h2> */}
+          </Stack>
+        </Container>
+      </Stack>
+    </Stack>
   );
 };
 
