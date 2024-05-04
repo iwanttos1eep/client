@@ -8,10 +8,13 @@ import TabPanel from '../../components/core/TabPanel';
 import ServiceCard from './components/ServiceCard';
 import SubscriptionTab from './components/SubscriptionTab';
 import SubscriptionDialog from './components/SubscriptionDialog';
+import GroupSessionDialog from './components/GroupSessionDialog';
 
 const HomePage = () => {
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [isOpenSubscriptionDialog, setOpenSubscriptionDialog] =
+    useState<boolean>(false);
+  const [isOpenGroupSessionDialog, setOpenGroupSessionDialog] =
     useState<boolean>(false);
 
   return (
@@ -52,7 +55,7 @@ const HomePage = () => {
               />
               <ServiceCard
                 image={groupTrainingImage}
-                onCardClick={() => {}}
+                onCardClick={() => setOpenGroupSessionDialog(true)}
                 title="Групповые занятия"
                 subTitle="Тренировки с единомышленниками"
               />
@@ -103,6 +106,10 @@ const HomePage = () => {
       <SubscriptionDialog
         open={isOpenSubscriptionDialog}
         onCLose={() => setOpenSubscriptionDialog(false)}
+      />
+      <GroupSessionDialog
+        open={isOpenGroupSessionDialog}
+        onCLose={() => setOpenGroupSessionDialog(false)}
       />
     </Stack>
   );
