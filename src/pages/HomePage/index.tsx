@@ -7,9 +7,12 @@ import personalTrainingImage from '../../images/personal_training_sessions.jpg';
 import TabPanel from '../../components/core/TabPanel';
 import ServiceCard from './components/ServiceCard';
 import SubscriptionTab from './components/SubscriptionTab';
+import SubscriptionDialog from './components/SubscriptionDialog';
 
 const HomePage = () => {
   const [tabIndex, setTabIndex] = useState<number>(0);
+  const [isOpenSubscriptionDialog, setOpenSubscriptionDialog] =
+    useState<boolean>(false);
 
   return (
     <Stack>
@@ -42,7 +45,7 @@ const HomePage = () => {
             <Stack direction="row" gap="1rem" justifyContent="space-between">
               <ServiceCard
                 image={buySubscriptionImage}
-                onCardClick={() => {}}
+                onCardClick={() => setOpenSubscriptionDialog(true)}
                 title="Купить абонемент"
                 subTitle="Станьте членом нашего клуба, занимайтесь на лучших
                 тренировочных аппаратах"
@@ -97,6 +100,10 @@ const HomePage = () => {
           </Stack>
         </Container>
       </Stack>
+      <SubscriptionDialog
+        open={isOpenSubscriptionDialog}
+        onCLose={() => setOpenSubscriptionDialog(false)}
+      />
     </Stack>
   );
 };
