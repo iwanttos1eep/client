@@ -72,6 +72,13 @@ const SubscriptionDialog = (props: ISubscriptionDialogProps) => {
             value="nikitos@mail.ru"
             disabled
           />
+          <TextField
+            label="Текущий тариф"
+            variant="standard"
+            fullWidth
+            value="Безлимитная карта на 1 месяц (ДНЕВНАЯ)"
+            disabled
+          />
           <FormControl sx={{ minWidth: 120 }}>
             <InputLabel id="demo-simple-select-helper-label" size="small">
               Абонемент
