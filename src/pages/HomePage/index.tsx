@@ -9,12 +9,15 @@ import ServiceCard from './components/ServiceCard';
 import SubscriptionTab from './components/SubscriptionTab';
 import SubscriptionDialog from './components/SubscriptionDialog';
 import GroupSessionDialog from './components/GroupSessionDialog';
+import PersonalSessionDialog from './components/PersonalSessionDialog';
 
 const HomePage = () => {
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [isOpenSubscriptionDialog, setOpenSubscriptionDialog] =
     useState<boolean>(false);
   const [isOpenGroupSessionDialog, setOpenGroupSessionDialog] =
+    useState<boolean>(false);
+  const [isOpenPersonalSessionDialog, setOpenPersonalSessionDialog] =
     useState<boolean>(false);
 
   return (
@@ -61,7 +64,7 @@ const HomePage = () => {
               />
               <ServiceCard
                 image={personalTrainingImage}
-                onCardClick={() => {}}
+                onCardClick={() => setOpenPersonalSessionDialog(true)}
                 title="Персональные тренировки"
                 subTitle="Станьте сильнее с нашими специалистами"
               />
@@ -110,6 +113,10 @@ const HomePage = () => {
       <GroupSessionDialog
         open={isOpenGroupSessionDialog}
         onCLose={() => setOpenGroupSessionDialog(false)}
+      />
+      <PersonalSessionDialog
+        onCLose={() => setOpenPersonalSessionDialog(false)}
+        open={isOpenPersonalSessionDialog}
       />
     </Stack>
   );
