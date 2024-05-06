@@ -16,11 +16,13 @@ import Header from '../../components/feature/Header';
 import ServiceCard from '../HomePage/components/ServiceCard';
 import usersImage from '../../images/users.jpg';
 import inventoryImage from '../../images/inventory.jpg';
-import UserCard from './components/UserCard';
 import NewUserDialog from './components/NewUserDialog';
+import UsersInformation from './components/UsersInformation';
+import InventoryManagement from './components/InventoryManagement';
 
 const AdminPAge = () => {
   const [isCreateNewUser, setCreateNewUser] = useState<boolean>(false);
+  const [cardIndex, setCardIndex] = useState<number>(0);
 
   return (
     <Stack>
@@ -53,7 +55,7 @@ const AdminPAge = () => {
             <Stack direction="row" gap="1rem" justifyContent="space-between">
               <ServiceCard
                 image={usersImage}
-                onCardClick={() => {}}
+                onCardClick={() => setCardIndex(0)}
                 title="Информация о пользователях"
                 width="260px"
               />
@@ -65,7 +67,7 @@ const AdminPAge = () => {
               />
               <ServiceCard
                 image={inventoryImage}
-                onCardClick={() => {}}
+                onCardClick={() => setCardIndex(2)}
                 title="Управление инвентарём"
                 width="260px"
               />
@@ -76,19 +78,13 @@ const AdminPAge = () => {
                 width="260px"
               />
             </Stack>
-
-            <Typography variant="h5" fontWeight="bold">
-              Пользователи
-            </Typography>
-            <Stack gap="1.5rem">
-              <TextField label="Поиск" variant="standard" />
-              <Stack bgcolor="background.paper" direction="column" gap="1.5rem">
-                <UserCard userName="Русаков Никита" />
-                <UserCard userName="Хуснуриялов Булат" />
-                <UserCard userName="Кашапов Руслан" />
-                <UserCard userName="Галлямов Вадим" />
-              </Stack>
-            </Stack>
+            {cardIndex === 0 ? (
+              <UsersInformation />
+            ) : cardIndex === 2 ? (
+              <InventoryManagement />
+            ) : (
+              <></>
+            )}
           </Stack>
         </Container>
       </Stack>
