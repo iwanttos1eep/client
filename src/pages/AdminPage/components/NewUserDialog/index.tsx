@@ -20,6 +20,7 @@ const NewUserDialog = (props: INewUserDialogProps) => {
   const [isSubmittedSubscription, setSubmittedSubscription] =
     useState<boolean>(false);
   const [subscription, setSubscription] = useState<string>('');
+  const [role, setRole] = useState<string>('');
 
   return (
     <MainDialog
@@ -68,28 +69,46 @@ const NewUserDialog = (props: INewUserDialogProps) => {
           />
           <FormControl sx={{ minWidth: 120 }}>
             <InputLabel id="demo-simple-select-helper-label" size="small">
-              Абонемент
+              Роль
             </InputLabel>
             <Select
               labelId="demo-simple-select-helper-label"
               id="demo-simple-select-helper"
-              value={subscription}
-              label="Абонемент"
-              onChange={(event) => setSubscription(event.target.value)}
+              value={role}
+              label="Роль"
+              onChange={(event) => setRole(event.target.value)}
               size="small"
             >
-              <MenuItem value={10}>Разовое посещение</MenuItem>
-              <MenuItem value={20}>
-                Безлимитная карта на 1 месяц (ДНЕВНАЯ)
-              </MenuItem>
-              <MenuItem value={30}>
-                Безлимитная карта на 1 месяц (ВЕСЬ ДЕНЬ)
-              </MenuItem>
-              <MenuItem value={40}>Безлимитная карта на 3 месяца</MenuItem>
-              <MenuItem value={50}>Безлимитная карта на 6 месяцев</MenuItem>
-              <MenuItem value={60}>Безлимитная карта на 12 месяцев</MenuItem>
+              <MenuItem value="visitor">Посетитель</MenuItem>
+              <MenuItem value="trainer">Тренер</MenuItem>
             </Select>
           </FormControl>
+          {role === 'visitor' && (
+            <FormControl sx={{ minWidth: 120 }}>
+              <InputLabel id="demo-simple-select-helper-label" size="small">
+                Абонемент
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-helper-label"
+                id="demo-simple-select-helper"
+                value={subscription}
+                label="Абонемент"
+                onChange={(event) => setSubscription(event.target.value)}
+                size="small"
+              >
+                <MenuItem value={10}>Разовое посещение</MenuItem>
+                <MenuItem value={20}>
+                  Безлимитная карта на 1 месяц (ДНЕВНАЯ)
+                </MenuItem>
+                <MenuItem value={30}>
+                  Безлимитная карта на 1 месяц (ВЕСЬ ДЕНЬ)
+                </MenuItem>
+                <MenuItem value={40}>Безлимитная карта на 3 месяца</MenuItem>
+                <MenuItem value={50}>Безлимитная карта на 6 месяцев</MenuItem>
+                <MenuItem value={60}>Безлимитная карта на 12 месяцев</MenuItem>
+              </Select>
+            </FormControl>
+          )}
         </Stack>
       )}
     </MainDialog>
