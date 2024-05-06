@@ -7,9 +7,18 @@ import personalTrainingImage from '../../images/personal_training_sessions.jpg';
 import TabPanel from '../../components/core/TabPanel';
 import ServiceCard from './components/ServiceCard';
 import SubscriptionTab from './components/SubscriptionTab';
+import SubscriptionDialog from './components/SubscriptionDialog';
+import GroupSessionDialog from './components/GroupSessionDialog';
+import PersonalSessionDialog from './components/PersonalSessionDialog';
 
 const HomePage = () => {
   const [tabIndex, setTabIndex] = useState<number>(0);
+  const [isOpenSubscriptionDialog, setOpenSubscriptionDialog] =
+    useState<boolean>(false);
+  const [isOpenGroupSessionDialog, setOpenGroupSessionDialog] =
+    useState<boolean>(false);
+  const [isOpenPersonalSessionDialog, setOpenPersonalSessionDialog] =
+    useState<boolean>(false);
 
   return (
     <Stack>
@@ -42,20 +51,20 @@ const HomePage = () => {
             <Stack direction="row" gap="1rem" justifyContent="space-between">
               <ServiceCard
                 image={buySubscriptionImage}
-                onCardClick={() => {}}
+                onCardClick={() => setOpenSubscriptionDialog(true)}
                 title="Купить абонемент"
                 subTitle="Станьте членом нашего клуба, занимайтесь на лучших
                 тренировочных аппаратах"
               />
               <ServiceCard
                 image={groupTrainingImage}
-                onCardClick={() => {}}
+                onCardClick={() => setOpenGroupSessionDialog(true)}
                 title="Групповые занятия"
                 subTitle="Тренировки с единомышленниками"
               />
               <ServiceCard
                 image={personalTrainingImage}
-                onCardClick={() => {}}
+                onCardClick={() => setOpenPersonalSessionDialog(true)}
                 title="Персональные тренировки"
                 subTitle="Станьте сильнее с нашими специалистами"
               />
@@ -97,6 +106,18 @@ const HomePage = () => {
           </Stack>
         </Container>
       </Stack>
+      <SubscriptionDialog
+        open={isOpenSubscriptionDialog}
+        onCLose={() => setOpenSubscriptionDialog(false)}
+      />
+      <GroupSessionDialog
+        open={isOpenGroupSessionDialog}
+        onCLose={() => setOpenGroupSessionDialog(false)}
+      />
+      <PersonalSessionDialog
+        onCLose={() => setOpenPersonalSessionDialog(false)}
+        open={isOpenPersonalSessionDialog}
+      />
     </Stack>
   );
 };

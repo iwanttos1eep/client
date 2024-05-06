@@ -8,16 +8,17 @@ import {
 import React from 'react';
 
 interface IServiceCardProps {
-  image: string;
+  image?: string;
   title: string;
-  subTitle: string;
+  subTitle?: string;
   onCardClick: () => void;
+  width?: string;
 }
 
 const ServiceCard = (props: IServiceCardProps) => {
-  const { image, onCardClick, subTitle, title } = props;
+  const { image, onCardClick, subTitle, title, width } = props;
   return (
-    <Card sx={{ width: 330, flex: 'none' }}>
+    <Card sx={{ width: width ? width : 330, flex: 'none' }}>
       <CardActionArea onClick={onCardClick}>
         <CardMedia
           sx={{ height: 140 }}
