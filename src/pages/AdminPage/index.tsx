@@ -11,15 +11,17 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '../../components/feature/Header';
 import ServiceCard from '../HomePage/components/ServiceCard';
 import usersImage from '../../images/users.jpg';
 import inventoryImage from '../../images/inventory.jpg';
-import { MoreVert } from '@mui/icons-material';
 import UserCard from './components/UserCard';
+import NewUserDialog from './components/NewUserDialog';
 
 const AdminPAge = () => {
+  const [isCreateNewUser, setCreateNewUser] = useState<boolean>(false);
+
   return (
     <Stack>
       <Header
@@ -57,7 +59,7 @@ const AdminPAge = () => {
               />
               <ServiceCard
                 image={'groupTrainingImage'}
-                onCardClick={() => {}}
+                onCardClick={() => setCreateNewUser(true)}
                 title="Регистрация пользователей"
                 width="260px"
               />
@@ -90,6 +92,10 @@ const AdminPAge = () => {
           </Stack>
         </Container>
       </Stack>
+      <NewUserDialog
+        open={isCreateNewUser}
+        onCLose={() => setCreateNewUser(false)}
+      />
     </Stack>
   );
 };
