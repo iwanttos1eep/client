@@ -20,6 +20,7 @@ import NewUserDialog from './components/NewUserDialog';
 import UsersInformation from './components/UsersInformation';
 import InventoryManagement from './components/InventoryManagement';
 import VisitRegistrationDialog from './components/VisitRegistrationDialog';
+import WeeklySchedule from './components/WeeklySchedule';
 
 const AdminPAge = () => {
   const [isCreateNewUser, setCreateNewUser] = useState<boolean>(false);
@@ -54,7 +55,13 @@ const AdminPAge = () => {
             <Typography variant="h5" fontWeight="bold">
               Виды услуг и направления
             </Typography>
-            <Stack direction="row" gap="1rem" justifyContent="space-between">
+            <Stack
+              direction="row"
+              gap="1rem"
+              justifyContent="space-between"
+              overflow="scroll"
+              padding="1rem"
+            >
               <ServiceCard
                 image={usersImage}
                 onCardClick={() => setCardIndex(0)}
@@ -79,11 +86,19 @@ const AdminPAge = () => {
                 title="Регистрация посещения"
                 width="260px"
               />
+              <ServiceCard
+                image={'weeklySchedule'}
+                onCardClick={() => setCardIndex(4)}
+                title="Расписание на неделю"
+                width="260px"
+              />
             </Stack>
             {cardIndex === 0 ? (
               <UsersInformation />
             ) : cardIndex === 2 ? (
               <InventoryManagement />
+            ) : cardIndex === 4 ? (
+              <WeeklySchedule />
             ) : (
               <></>
             )}
