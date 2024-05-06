@@ -19,9 +19,11 @@ import inventoryImage from '../../images/inventory.jpg';
 import NewUserDialog from './components/NewUserDialog';
 import UsersInformation from './components/UsersInformation';
 import InventoryManagement from './components/InventoryManagement';
+import VisitRegistrationDialog from './components/VisitRegistrationDialog';
 
 const AdminPAge = () => {
   const [isCreateNewUser, setCreateNewUser] = useState<boolean>(false);
+  const [isVisitRegistration, setVisitRegistration] = useState<boolean>(false);
   const [cardIndex, setCardIndex] = useState<number>(0);
 
   return (
@@ -73,7 +75,7 @@ const AdminPAge = () => {
               />
               <ServiceCard
                 image={'personalTrainingImage'}
-                onCardClick={() => {}}
+                onCardClick={() => setVisitRegistration(true)}
                 title="Регистрация посещения"
                 width="260px"
               />
@@ -91,6 +93,10 @@ const AdminPAge = () => {
       <NewUserDialog
         open={isCreateNewUser}
         onCLose={() => setCreateNewUser(false)}
+      />
+      <VisitRegistrationDialog
+        open={isVisitRegistration}
+        onCLose={() => setVisitRegistration(false)}
       />
     </Stack>
   );
