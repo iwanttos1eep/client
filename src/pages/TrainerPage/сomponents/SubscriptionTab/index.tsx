@@ -24,7 +24,7 @@ const SubscriptionTab = () => {
     },
     {
       title: 'Направление',
-      description: 'Cтретчинг',
+      description: 'Стретчинг',
     },
     {
       title: 'Общее Количество',
@@ -34,7 +34,6 @@ const SubscriptionTab = () => {
       title: 'Список клиентов',
       description: ' ',
     },
-    
   ];
 
   return (
@@ -43,8 +42,7 @@ const SubscriptionTab = () => {
         <TableHead>
           <TableRow>
             <TableCell sx={{ fontWeight: 'bold' }}>Услуга</TableCell>
-            <TableCell align="right" sx={{ fontWeight: 'bold' }}>
-            </TableCell>
+            <TableCell align="right" sx={{ fontWeight: 'bold' }}></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -63,7 +61,7 @@ const SubscriptionTab = () => {
                   gap="1rem"
                   justifyContent="flex-end"
                 >
-                  <Stack>{row.description} р.</Stack>
+                  <Stack>{row.description}</Stack>
                   <Stack>
                     <IconButton>
                       <Add />
