@@ -7,10 +7,12 @@ import gymInventory from '../../images/gym_inventory.jpg';
 import infoAboutVisitors from '../../images/info_about_visitors.jpg';
 import ServiceCard from './сomponents/ServiceCard';
 import VisitRegistrationDialog from './сomponents/VisitRegistrationDialog';
+import InventoryManagement from './сomponents/InventoryManagement';
 
 const TrainerPage = () => {
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [isVisitRegistration, setVisitRegistration] = useState<boolean>(false);
+  const [cardIndex, setCardIndex] = useState<number>(0);
 
   return (
     <Stack>
@@ -67,20 +69,12 @@ const TrainerPage = () => {
               />
               <ServiceCard
                 image={gymInventory}
-                onCardClick={() => {}}
+                onCardClick={() => setCardIndex(3)}
                 title="Управление инвентарём"
                 subTitle=""
               />
             </Stack>
-            {/* {cardIndex === 1 ? (
-              <UsersInformation />
-            ) : cardIndex === 2 ? (
-              <InventoryManagement />
-            ) : cardIndex === 4 ? (
-              <WeeklySchedule />
-            ) : (
-              <></>
-            )} */}
+            {cardIndex === 3 ? <InventoryManagement /> : <></>}
             {/* <Typography variant="h5" fontWeight="bold">
               Расписание занятий
             </Typography>
