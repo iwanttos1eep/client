@@ -16,6 +16,9 @@ import Header from '../../components/feature/Header';
 import ServiceCard from '../HomePage/components/ServiceCard';
 import usersImage from '../../images/users.jpg';
 import inventoryImage from '../../images/inventory.jpg';
+import weeklySchedule from '../../images/schedule.jpg'
+import registrationMembers from '../../images/registration_member.jpg'
+import personalTrainingImage from '../../images/coming_client.jpg'
 import NewUserDialog from './components/NewUserDialog';
 import UsersInformation from './components/UsersInformation';
 import InventoryManagement from './components/InventoryManagement';
@@ -69,7 +72,7 @@ const AdminPAge = () => {
                 width="260px"
               />
               <ServiceCard
-                image={'groupTrainingImage'}
+                image={registrationMembers}
                 onCardClick={() => setCreateNewUser(true)}
                 title="Регистрация пользователей"
                 width="260px"
@@ -81,13 +84,13 @@ const AdminPAge = () => {
                 width="260px"
               />
               <ServiceCard
-                image={'personalTrainingImage'}
+                image={personalTrainingImage}
                 onCardClick={() => setVisitRegistration(true)}
                 title="Регистрация посещения"
                 width="260px"
               />
               <ServiceCard
-                image={'weeklySchedule'}
+                image={weeklySchedule}
                 onCardClick={() => setCardIndex(4)}
                 title="Расписание на неделю"
                 width="260px"
