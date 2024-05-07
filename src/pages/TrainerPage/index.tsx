@@ -8,6 +8,7 @@ import infoAboutVisitors from '../../images/info_about_visitors.jpg';
 import ServiceCard from './сomponents/ServiceCard';
 import VisitRegistrationDialog from './сomponents/VisitRegistrationDialog';
 import InventoryManagement from './сomponents/InventoryManagement';
+import TrainingPlanning from './сomponents/TrainingPlanning';
 
 const TrainerPage = () => {
   const [tabIndex, setTabIndex] = useState<number>(0);
@@ -42,17 +43,25 @@ const TrainerPage = () => {
             <Typography variant="h5" fontWeight="bold">
               Виды услуг и направления
             </Typography>
-            <Stack
-              direction="row"
-              gap="1rem"
-              justifyContent="space-between"
-              overflow="scroll"
-              padding="1rem"
-            >
+            <Stack direction="row" gap="1rem" justifyContent="space-between">
+              {/* 
+              TODO - Ненужная вкладка, т.к всю инфу можно будет посмотреть в "Планировании тренировок"
               <ServiceCard
-                image={infoAboutVisitors}
-                onCardClick={() => {}}
-                title="Информация о клиентах"
+                image={groupTrainingImage}
+                onCardClick={() => setVisitRegistration(true)}
+                title="Регистрация посещений"
+                subTitle=""
+              /> */}
+              <ServiceCard
+                image={personalTrainingImage}
+                onCardClick={() => setCardIndex(0)}
+                title="Планирование тренировок"
+                subTitle=""
+              />
+              <ServiceCard
+                image={gymInventory}
+                onCardClick={() => setCardIndex(1)}
+                title="Управление инвентарём"
                 subTitle=""
               />
               <ServiceCard
@@ -61,20 +70,9 @@ const TrainerPage = () => {
                 title="Регистрация посещений"
                 subTitle=""
               />
-              <ServiceCard
-                image={personalTrainingImage}
-                onCardClick={() => {}}
-                title="Планирование тренировок"
-                subTitle=""
-              />
-              <ServiceCard
-                image={gymInventory}
-                onCardClick={() => setCardIndex(3)}
-                title="Управление инвентарём"
-                subTitle=""
-              />
             </Stack>
-            {cardIndex === 3 ? <InventoryManagement /> : <></>}
+            {cardIndex === 0 && <TrainingPlanning />}
+            {cardIndex === 1 && <InventoryManagement />}
             {/* <Typography variant="h5" fontWeight="bold">
               Расписание занятий
             </Typography>
