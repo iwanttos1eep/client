@@ -11,7 +11,6 @@ import InventoryManagement from './сomponents/InventoryManagement';
 import TrainingPlanning from './сomponents/TrainingPlanning';
 
 const TrainerPage = () => {
-  const [tabIndex, setTabIndex] = useState<number>(0);
   const [isVisitRegistration, setVisitRegistration] = useState<boolean>(false);
   const [cardIndex, setCardIndex] = useState<number>(0);
 

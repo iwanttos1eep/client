@@ -14,7 +14,7 @@ import _ from 'lodash';
 interface ITrainingRowProps {
   row: {
     name: string;
-    data: string;
+    date: string;
     users: string[];
   };
 }
@@ -32,7 +32,7 @@ const TrainingRow = (props: ITrainingRowProps) => {
         {row.name}
       </TableCell>
       <TableCell width={'33%'} align="center">
-        {row.data}
+        {row.date}
       </TableCell>
       <TableCell width={'33%'} align="right">
         {isExpandUsers ? (
