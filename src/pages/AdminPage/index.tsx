@@ -1,24 +1,12 @@
-import {
-  Avatar,
-  Box,
-  Card,
-  CardContent,
-  CardHeader,
-  CardMedia,
-  Container,
-  IconButton,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Container, Stack, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import Header from '../../components/feature/Header';
 import ServiceCard from '../HomePage/components/ServiceCard';
 import usersImage from '../../images/users.jpg';
 import inventoryImage from '../../images/inventory.jpg';
-import weeklySchedule from '../../images/schedule.jpg'
-import registrationMembers from '../../images/registration_member.jpg'
-import personalTrainingImage from '../../images/coming_client.jpg'
+import weeklySchedule from '../../images/schedule.jpg';
+import registrationMembers from '../../images/registration_member.jpg';
+import personalTrainingImage from '../../images/coming_client.jpg';
 import NewUserDialog from './components/NewUserDialog';
 import UsersInformation from './components/UsersInformation';
 import InventoryManagement from './components/InventoryManagement';

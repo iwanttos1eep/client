@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import Header from '../../components/feature/Header';
-import { Box, Container, Stack, Tab, Tabs, Typography } from '@mui/material';
+import { Container, Stack, Typography } from '@mui/material';
 import groupTrainingImage from '../../images/group_training_sessions.jpg';
 import personalTrainingImage from '../../images/personal_training_sessions.jpg';
-import gymInventory from '../../images/gym_inventory.jpg'
-import infoAboutVisitors from '../../images/info_about_visitors.jpg'
-import TabPanel from '../../components/core/TabPanel';
+import gymInventory from '../../images/gym_inventory.jpg';
+import infoAboutVisitors from '../../images/info_about_visitors.jpg';
 import ServiceCard from './сomponents/ServiceCard';
-import SubscriptionTab from './сomponents/SubscriptionTab';
-
+import VisitRegistrationDialog from './сomponents/VisitRegistrationDialog';
 
 const TrainerPage = () => {
   const [tabIndex, setTabIndex] = useState<number>(0);
+  const [isVisitRegistration, setVisitRegistration] = useState<boolean>(false);
 
   return (
     <Stack>
@@ -41,7 +40,13 @@ const TrainerPage = () => {
             <Typography variant="h5" fontWeight="bold">
               Виды услуг и направления
             </Typography>
-            <Stack direction="row" gap="1rem" justifyContent="space-between">
+            <Stack
+              direction="row"
+              gap="1rem"
+              justifyContent="space-between"
+              overflow="scroll"
+              padding="1rem"
+            >
               <ServiceCard
                 image={infoAboutVisitors}
                 onCardClick={() => {}}
@@ -50,7 +55,7 @@ const TrainerPage = () => {
               />
               <ServiceCard
                 image={groupTrainingImage}
-                onCardClick={() => {}}
+                onCardClick={() => setVisitRegistration(true)}
                 title="Регистрация посещений"
                 subTitle=""
               />
@@ -67,8 +72,16 @@ const TrainerPage = () => {
                 subTitle=""
               />
             </Stack>
-
-            <Typography variant="h5" fontWeight="bold">
+            {/* {cardIndex === 1 ? (
+              <UsersInformation />
+            ) : cardIndex === 2 ? (
+              <InventoryManagement />
+            ) : cardIndex === 4 ? (
+              <WeeklySchedule />
+            ) : (
+              <></>
+            )} */}
+            {/* <Typography variant="h5" fontWeight="bold">
               Расписание занятий
             </Typography>
 
@@ -100,10 +113,14 @@ const TrainerPage = () => {
               <TabPanel value={tabIndex} index={2}>
                 <SubscriptionTab />
               </TabPanel>
-            </Box>
+            </Box> */}
           </Stack>
         </Container>
       </Stack>
+      <VisitRegistrationDialog
+        open={isVisitRegistration}
+        onCLose={() => setVisitRegistration(false)}
+      />
     </Stack>
   );
 };

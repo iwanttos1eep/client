@@ -38,7 +38,7 @@ const SubscriptionTab = () => {
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+      <Table sx={{ minWidth: 650 }} aria-label="a dense table">
         <TableHead>
           <TableRow>
             <TableCell sx={{ fontWeight: 'bold' }}>Услуга</TableCell>
@@ -62,11 +62,6 @@ const SubscriptionTab = () => {
                   justifyContent="flex-end"
                 >
                   <Stack>{row.description}</Stack>
-                  <Stack>
-                    <IconButton>
-                      <Add />
-                    </IconButton>
-                  </Stack>
                 </Stack>
               </TableCell>
             </TableRow>
