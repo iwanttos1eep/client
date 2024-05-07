@@ -28,7 +28,7 @@ const SubscriptionTab = () => {
     },
     {
       title: 'Общее Количество',
-      description: ' ',
+      description: '8',
     },
     {
       title: 'Список клиентов',
