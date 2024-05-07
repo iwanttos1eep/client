@@ -1,6 +1,7 @@
 import {
   Autocomplete,
   Button,
+  IconButton,
   Paper,
   Stack,
   Table,
@@ -15,6 +16,7 @@ import {
 import React, { useState } from 'react';
 import MainDialog from '../MainDialog';
 import successImage from '../../../images/success.svg';
+import { Remove } from '@mui/icons-material';
 
 const InventoryManagement = () => {
   const [isOpenDialog, setOpenDialog] = useState<boolean>(false);
@@ -77,14 +79,19 @@ const InventoryManagement = () => {
                   1
                 </TableCell>
                 <TableCell width={'33%'} align="right">
-                  <Autocomplete
-                    id="combo-box-demo"
-                    options={users}
-                    fullWidth
-                    renderInput={(params) => (
-                      <TextField {...params} label="Взявший пользователь" />
-                    )}
-                  />
+                  <Stack direction="row" alignItems="center" gap="1rem">
+                    <Autocomplete
+                      id="combo-box-demo"
+                      options={users}
+                      fullWidth
+                      renderInput={(params) => (
+                        <TextField {...params} label="Взявший пользователь" />
+                      )}
+                    />
+                    <IconButton>
+                      <Remove />
+                    </IconButton>
+                  </Stack>
                 </TableCell>
               </TableRow>
             ))}
