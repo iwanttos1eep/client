@@ -1,7 +1,7 @@
 import { MoreVert } from '@mui/icons-material';
 import { Avatar, Card, CardHeader, IconButton } from '@mui/material';
 import React from 'react';
-import { stringAvatar } from '../../../../utils/stringAvatar';
+import { stringAvatar } from '../../../utils/stringAvatar';
 
 interface IUserCardProps {
   userName: string;

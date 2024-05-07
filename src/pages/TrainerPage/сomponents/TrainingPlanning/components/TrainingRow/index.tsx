@@ -7,7 +7,7 @@ import {
   TableRow,
 } from '@mui/material';
 import React, { useState } from 'react';
-import UserCard from '../../../../../AdminPage/components/UserCard';
+import UserCard from '../../../../../../components/feature/UserCard';
 import { stringAvatar } from '../../../../../../utils/stringAvatar';
 import _ from 'lodash';
 

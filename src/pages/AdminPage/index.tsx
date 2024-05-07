@@ -10,12 +10,11 @@ import personalTrainingImage from '../../images/coming_client.jpg';
 import NewUserDialog from './components/NewUserDialog';
 import UsersInformation from './components/UsersInformation';
 import InventoryManagement from '../../components/feature/InventoryManagement';
-import VisitRegistrationDialog from './components/VisitRegistrationDialog';
 import WeeklySchedule from './components/WeeklySchedule';
+import UserVisit from '../../components/feature/UserVisit';
 
 const AdminPAge = () => {
   const [isCreateNewUser, setCreateNewUser] = useState<boolean>(false);
-  const [isVisitRegistration, setVisitRegistration] = useState<boolean>(false);
   const [cardIndex, setCardIndex] = useState<number>(0);
 
   return (
@@ -73,7 +72,7 @@ const AdminPAge = () => {
               />
               <ServiceCard
                 image={personalTrainingImage}
-                onCardClick={() => setVisitRegistration(true)}
+                onCardClick={() => setCardIndex(3)}
                 title="Регистрация посещения"
                 width="260px"
               />
@@ -84,25 +83,16 @@ const AdminPAge = () => {
                 width="260px"
               />
             </Stack>
-            {cardIndex === 0 ? (
-              <UsersInformation />
-            ) : cardIndex === 2 ? (
-              <InventoryManagement />
-            ) : cardIndex === 4 ? (
-              <WeeklySchedule />
-            ) : (
-              <></>
-            )}
+            {cardIndex === 0 && <UsersInformation />}
+            {cardIndex === 2 && <InventoryManagement />}
+            {cardIndex === 3 && <UserVisit />}
+            {cardIndex === 4 && <WeeklySchedule />}
           </Stack>
         </Container>
       </Stack>
       <NewUserDialog
         open={isCreateNewUser}
         onCLose={() => setCreateNewUser(false)}
-      />
-      <VisitRegistrationDialog
-        open={isVisitRegistration}
-        onCLose={() => setVisitRegistration(false)}
       />
     </Stack>
   );

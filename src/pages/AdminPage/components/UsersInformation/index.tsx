@@ -1,6 +1,6 @@
 import { Stack, TextField, Typography } from '@mui/material';
 import React from 'react';
-import UserCard from '../UserCard';
+import UserCard from '../../../../components/feature/UserCard';
 
 const UsersInformation = () => {
   return (

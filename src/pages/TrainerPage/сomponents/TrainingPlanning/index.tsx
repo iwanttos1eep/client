@@ -16,7 +16,7 @@ import React, { useState } from 'react';
 import _ from 'lodash';
 import TrainingRow from './components/TrainingRow';
 import TabPanel from '../../../../components/core/TabPanel';
-import UserCard from '../../../AdminPage/components/UserCard';
+import UserCard from '../../../../components/feature/UserCard';
 
 const TrainingPlanning = () => {
   const [tabIndex, setTabIndex] = useState<number>(0);

@@ -5,12 +5,12 @@ import groupTrainingImage from '../../images/group_training_sessions.jpg';
 import personalTrainingImage from '../../images/personal_training_sessions.jpg';
 import gymInventory from '../../images/gym_inventory.jpg';
 import ServiceCard from './сomponents/ServiceCard';
-import VisitRegistrationDialog from './сomponents/VisitRegistrationDialog';
+import VisitRegistrationDialog from '../../components/feature/UserVisit/components/VisitRegistrationDialog';
 import TrainingPlanning from './сomponents/TrainingPlanning';
 import InventoryManagement from '../../components/feature/InventoryManagement';
+import UserVisit from '../../components/feature/UserVisit';
 
 const TrainerPage = () => {
-  const [isVisitRegistration, setVisitRegistration] = useState<boolean>(false);
   const [cardIndex, setCardIndex] = useState<number>(0);
 
   return (
@@ -64,20 +64,17 @@ const TrainerPage = () => {
               />
               <ServiceCard
                 image={groupTrainingImage}
-                onCardClick={() => setVisitRegistration(true)}
+                onCardClick={() => setCardIndex(2)}
                 title="Регистрация посещений"
                 subTitle=""
               />
             </Stack>
             {cardIndex === 0 && <TrainingPlanning />}
             {cardIndex === 1 && <InventoryManagement />}
+            {cardIndex === 2 && <UserVisit />}
           </Stack>
         </Container>
       </Stack>
-      <VisitRegistrationDialog
-        open={isVisitRegistration}
-        onCLose={() => setVisitRegistration(false)}
-      />
     </Stack>
   );
 };
