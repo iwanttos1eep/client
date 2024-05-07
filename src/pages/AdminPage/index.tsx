@@ -9,7 +9,7 @@ import registrationMembers from '../../images/registration_member.jpg';
 import personalTrainingImage from '../../images/coming_client.jpg';
 import NewUserDialog from './components/NewUserDialog';
 import UsersInformation from './components/UsersInformation';
-import InventoryManagement from './components/InventoryManagement';
+import InventoryManagement from '../../components/feature/InventoryManagement';
 import VisitRegistrationDialog from './components/VisitRegistrationDialog';
 import WeeklySchedule from './components/WeeklySchedule';
 
