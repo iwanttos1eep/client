@@ -10,6 +10,7 @@ import {
 import React from 'react';
 import Header from '../../components/feature/Header';
 import { stringAvatar } from '../../utils/stringAvatar';
+import Footer from '../../components/feature/Footer';
 
 const ProfilePage = () => {
   return (
@@ -68,6 +69,7 @@ const ProfilePage = () => {
           </Card>
         </Container>
       </Stack>
+      <Footer />
     </Stack>
   );
 };

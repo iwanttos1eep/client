@@ -10,6 +10,7 @@ import UsersInformation from './components/UsersInformation';
 import InventoryManagement from '../../components/feature/InventoryManagement';
 import WeeklySchedule from './components/WeeklySchedule';
 import UserVisit from '../../components/feature/UserVisit';
+import Footer from '../../components/feature/Footer';
 
 const AdminPAge = () => {
   const [cardIndex, setCardIndex] = useState<number>(0);
@@ -79,6 +80,7 @@ const AdminPAge = () => {
           </Stack>
         </Container>
       </Stack>
+      <Footer />
     </Stack>
   );
 };

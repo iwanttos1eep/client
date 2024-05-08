@@ -10,6 +10,7 @@ import SubscriptionTab from './components/SubscriptionTab';
 import SubscriptionDialog from './components/SubscriptionDialog';
 import GroupSessionDialog from './components/GroupSessionDialog';
 import PersonalSessionDialog from './components/PersonalSessionDialog';
+import Footer from '../../components/feature/Footer';
 
 const HomePage = () => {
   const [tabIndex, setTabIndex] = useState<number>(0);
@@ -118,6 +119,7 @@ const HomePage = () => {
         onCLose={() => setOpenPersonalSessionDialog(false)}
         open={isOpenPersonalSessionDialog}
       />
+      <Footer />
     </Stack>
   );
 };

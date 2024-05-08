@@ -22,6 +22,7 @@ import schedule from '../../images/schedule.jpg';
 import users from '../../images/users.jpg';
 import strongMan2 from '../../images/strongMan2.jpg';
 import strongWoman from '../../images/strongWoman.jpg';
+import Footer from '../../components/feature/Footer';
 
 const AboutPage = () => {
   const itemData = [
@@ -167,6 +168,7 @@ const AboutPage = () => {
           </Stack>
         </Container>
       </Stack>
+      <Footer />
     </Stack>
   );
 };

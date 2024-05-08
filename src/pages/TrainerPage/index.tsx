@@ -8,6 +8,7 @@ import TrainingPlanning from './сomponents/TrainingPlanning';
 import InventoryManagement from '../../components/feature/InventoryManagement';
 import UserVisit from '../../components/feature/UserVisit';
 import ServiceCard from '../../components/feature/ServiceCard';
+import Footer from '../../components/feature/Footer';
 
 const TrainerPage = () => {
   const [cardIndex, setCardIndex] = useState<number>(0);
@@ -69,6 +70,7 @@ const TrainerPage = () => {
           </Stack>
         </Container>
       </Stack>
+      <Footer />
     </Stack>
   );
 };
