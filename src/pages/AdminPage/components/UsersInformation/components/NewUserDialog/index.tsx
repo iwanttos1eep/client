@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import MainDialog from '../../../../components/feature/MainDialog';
+import MainDialog from '../../../../../../components/feature/MainDialog';
 import {
   FormControl,
   InputLabel,
@@ -8,7 +8,7 @@ import {
   Stack,
   TextField,
 } from '@mui/material';
-import successImage from '../../../../images/success.svg';
+import successImage from '../../../../../../images/success.svg';
 
 interface INewUserDialogProps {
   open: boolean;

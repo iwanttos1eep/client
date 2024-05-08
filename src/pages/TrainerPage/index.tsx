@@ -4,11 +4,10 @@ import { Container, Stack, Typography } from '@mui/material';
 import groupTrainingImage from '../../images/group_training_sessions.jpg';
 import personalTrainingImage from '../../images/personal_training_sessions.jpg';
 import gymInventory from '../../images/gym_inventory.jpg';
-import ServiceCard from './сomponents/ServiceCard';
-import VisitRegistrationDialog from '../../components/feature/UserVisit/components/VisitRegistrationDialog';
 import TrainingPlanning from './сomponents/TrainingPlanning';
 import InventoryManagement from '../../components/feature/InventoryManagement';
 import UserVisit from '../../components/feature/UserVisit';
+import ServiceCard from '../../components/feature/ServiceCard';
 
 const TrainerPage = () => {
   const [cardIndex, setCardIndex] = useState<number>(0);
@@ -42,31 +41,26 @@ const TrainerPage = () => {
               Виды услуг и направления
             </Typography>
             <Stack direction="row" gap="1rem" justifyContent="space-between">
-              {/* 
-              TODO - Ненужная вкладка, т.к всю инфу можно будет посмотреть в "Планировании тренировок"
-              <ServiceCard
-                image={groupTrainingImage}
-                onCardClick={() => setVisitRegistration(true)}
-                title="Регистрация посещений"
-                subTitle=""
-              /> */}
               <ServiceCard
                 image={personalTrainingImage}
                 onCardClick={() => setCardIndex(0)}
                 title="Планирование тренировок"
                 subTitle=""
+                selected={cardIndex === 0}
               />
               <ServiceCard
                 image={gymInventory}
                 onCardClick={() => setCardIndex(1)}
                 title="Управление инвентарём"
                 subTitle=""
+                selected={cardIndex === 1}
               />
               <ServiceCard
                 image={groupTrainingImage}
                 onCardClick={() => setCardIndex(2)}
                 title="Регистрация посещений"
                 subTitle=""
+                selected={cardIndex === 2}
               />
             </Stack>
             {cardIndex === 0 && <TrainingPlanning />}

@@ -13,12 +13,19 @@ interface IServiceCardProps {
   subTitle?: string;
   onCardClick: () => void;
   width?: string;
+  selected?: boolean;
 }
 
 const ServiceCard = (props: IServiceCardProps) => {
-  const { image, onCardClick, subTitle, title, width } = props;
+  const { image, onCardClick, subTitle, title, width, selected } = props;
   return (
-    <Card sx={{ width: width ? width : 330, flex: 'none' }}>
+    <Card
+      sx={{
+        width: width ? width : 330,
+        flex: 'none',
+        boxShadow: selected ? '0px 0px 20px gray' : '',
+      }}
+    >
       <CardActionArea onClick={onCardClick}>
         <CardMedia
           sx={{ height: 140 }}

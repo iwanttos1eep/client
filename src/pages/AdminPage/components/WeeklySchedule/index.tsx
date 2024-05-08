@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Paper,
+  Stack,
   Tab,
   Table,
   TableBody,
@@ -22,30 +23,37 @@ const WeeklySchedule = () => {
 
   const rowsSunday = [
     {
-      lesson: 'Тренировка 1',
-      trainer: 'Тренер 1',
-      time: '18:00',
+      lesson: 'Stretch',
+      trainer: 'Елена Владимировна',
+      time: '10:00',
     },
     {
-      lesson: 'Тренировка 1',
-      trainer: 'Тренер 1',
-      time: '18:00',
+      lesson: 'Super Strong',
+      trainer: 'Тамара Солдатова',
+      time: '12:00',
     },
     {
-      lesson: 'Тренировка 1',
-      trainer: 'Тренер 1',
-      time: '18:00',
+      lesson: 'Hatha Yoga',
+      trainer: 'Регина Камиловна',
+      time: '13:00',
+    },
+    {
+      lesson: 'Pilates',
+      trainer: 'Айсылу Гурманова',
+      time: '16:00',
     },
   ];
 
   return (
     <>
-      <Typography variant="h5" fontWeight="bold">
-        Расписание на неделю
-      </Typography>
-      <Button variant="contained" onClick={() => setAddSchedule(true)}>
-        Добавить в расписание
-      </Button>
+      <Stack direction="row" gap="1rem" justifyContent="space-between">
+        <Typography variant="h5" fontWeight="bold">
+          Расписание на неделю
+        </Typography>
+        <Button variant="contained" onClick={() => setAddSchedule(true)}>
+          Добавить в расписание
+        </Button>
+      </Stack>
       <Box
         sx={{
           flexGrow: 1,
@@ -88,10 +96,10 @@ const WeeklySchedule = () => {
                     <TableCell width={'33%'} align="left">
                       {row.lesson}
                     </TableCell>
-                    <TableCell width={'33%'} align="right">
+                    <TableCell width={'33%'} align="center">
                       {row.trainer}
                     </TableCell>
-                    <TableCell width={'33%'} align="center">
+                    <TableCell width={'33%'} align="right">
                       {row.time}
                     </TableCell>
                   </TableRow>

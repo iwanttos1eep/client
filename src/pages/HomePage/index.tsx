@@ -5,7 +5,7 @@ import buySubscriptionImage from '../../images/buy_subscription.jpg';
 import groupTrainingImage from '../../images/group_training_sessions.jpg';
 import personalTrainingImage from '../../images/personal_training_sessions.jpg';
 import TabPanel from '../../components/core/TabPanel';
-import ServiceCard from './components/ServiceCard';
+import ServiceCard from '../../components/feature/ServiceCard';
 import SubscriptionTab from './components/SubscriptionTab';
 import SubscriptionDialog from './components/SubscriptionDialog';
 import GroupSessionDialog from './components/GroupSessionDialog';

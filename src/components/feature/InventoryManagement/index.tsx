@@ -50,20 +50,27 @@ const InventoryManagement = () => {
 
   return (
     <>
-      <Typography variant="h5" fontWeight="bold">
-        Управление инвентарём
-      </Typography>
-
-      <Button variant="contained" onClick={() => setOpenDialog(true)}>
-        Добавить инвентарь
-      </Button>
+      <Stack direction="row" gap="1rem" justifyContent="space-between">
+        <Typography variant="h5" fontWeight="bold">
+          Управление инвентарём
+        </Typography>
+        <Button variant="contained" onClick={() => setOpenDialog(true)}>
+          Добавить инвентарь
+        </Button>
+      </Stack>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
-              <TableCell align="left">Позиция</TableCell>
-              <TableCell align="center">Количество</TableCell>
-              <TableCell align="right">Статус</TableCell>
+              <TableCell align="left" sx={{ fontWeight: 'bold' }}>
+                Позиция
+              </TableCell>
+              <TableCell align="center" sx={{ fontWeight: 'bold' }}>
+                Количество
+              </TableCell>
+              <TableCell align="right" sx={{ fontWeight: 'bold' }}>
+                Статус
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

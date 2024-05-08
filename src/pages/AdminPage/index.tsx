@@ -1,20 +1,17 @@
 import { Container, Stack, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import Header from '../../components/feature/Header';
-import ServiceCard from '../HomePage/components/ServiceCard';
+import ServiceCard from '../../components/feature/ServiceCard';
 import usersImage from '../../images/users.jpg';
 import inventoryImage from '../../images/inventory.jpg';
 import weeklySchedule from '../../images/schedule.jpg';
-import registrationMembers from '../../images/registration_member.jpg';
 import personalTrainingImage from '../../images/coming_client.jpg';
-import NewUserDialog from './components/NewUserDialog';
 import UsersInformation from './components/UsersInformation';
 import InventoryManagement from '../../components/feature/InventoryManagement';
 import WeeklySchedule from './components/WeeklySchedule';
 import UserVisit from '../../components/feature/UserVisit';
 
 const AdminPAge = () => {
-  const [isCreateNewUser, setCreateNewUser] = useState<boolean>(false);
   const [cardIndex, setCardIndex] = useState<number>(0);
 
   return (
@@ -45,55 +42,43 @@ const AdminPAge = () => {
             <Typography variant="h5" fontWeight="bold">
               Виды услуг и направления
             </Typography>
-            <Stack
-              direction="row"
-              gap="1rem"
-              justifyContent="space-between"
-              overflow="scroll"
-              padding="1rem"
-            >
+            <Stack direction="row" gap="1rem" justifyContent="space-between">
               <ServiceCard
                 image={usersImage}
                 onCardClick={() => setCardIndex(0)}
-                title="Информация о пользователях"
+                title="Пользователи"
                 width="260px"
-              />
-              <ServiceCard
-                image={registrationMembers}
-                onCardClick={() => setCreateNewUser(true)}
-                title="Регистрация пользователей"
-                width="260px"
+                selected={cardIndex === 0}
               />
               <ServiceCard
                 image={inventoryImage}
-                onCardClick={() => setCardIndex(2)}
+                onCardClick={() => setCardIndex(1)}
                 title="Управление инвентарём"
                 width="260px"
+                selected={cardIndex === 1}
               />
               <ServiceCard
                 image={personalTrainingImage}
-                onCardClick={() => setCardIndex(3)}
+                onCardClick={() => setCardIndex(2)}
                 title="Регистрация посещения"
                 width="260px"
+                selected={cardIndex === 2}
               />
               <ServiceCard
                 image={weeklySchedule}
-                onCardClick={() => setCardIndex(4)}
+                onCardClick={() => setCardIndex(3)}
                 title="Расписание на неделю"
                 width="260px"
+                selected={cardIndex === 3}
               />
             </Stack>
             {cardIndex === 0 && <UsersInformation />}
-            {cardIndex === 2 && <InventoryManagement />}
-            {cardIndex === 3 && <UserVisit />}
-            {cardIndex === 4 && <WeeklySchedule />}
+            {cardIndex === 1 && <InventoryManagement />}
+            {cardIndex === 2 && <UserVisit />}
+            {cardIndex === 3 && <WeeklySchedule />}
           </Stack>
         </Container>
       </Stack>
-      <NewUserDialog
-        open={isCreateNewUser}
-        onCLose={() => setCreateNewUser(false)}
-      />
     </Stack>
   );
 };
