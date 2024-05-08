@@ -1,10 +1,11 @@
 import React from 'react';
 import './index.css';
+import { Container } from '@mui/material';
 
 const Footer = () => {
   return (
-    <footer className="site-footer">
-      <div className="container">
+    <footer className="site-footer" style={{ marginTop: '1rem' }}>
+      <Container>
         <div className="row">
           <div className="col-sm-12 col-md-6">
             <h6>О нас</h6>
@@ -51,8 +52,8 @@ const Footer = () => {
           </div>
         </div>
         <hr />
-      </div>
-      <div className="container">
+      </Container>
+      <Container>
         <div className="row">
           <div className="col-md-8 col-sm-6 col-xs-12">
             <p className="copyright-text">
@@ -61,7 +62,7 @@ const Footer = () => {
             </p>
           </div>
         </div>
-      </div>
+      </Container>
     </footer>
   );
 };
