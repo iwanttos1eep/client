@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage';
 import AdminPAge from './pages/AdminPage';
 import TrainerPage from './pages/TrainerPage';
 import ProfilePage from './pages/ProfilePage';
+import AboutPage from './pages/AboutPage';
 
 const RouterWrapper = () => {
   return (
@@ -14,6 +15,7 @@ const RouterWrapper = () => {
       <Route path="/admin" Component={AdminPAge} />
       <Route path="/trainer" Component={TrainerPage} />
       <Route path="/profile" Component={ProfilePage} />
+      <Route path="/about" Component={AboutPage} />
     </Routes>
   );
 };

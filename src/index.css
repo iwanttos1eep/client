@@ -85,3 +85,16 @@ body {
 .btn-xl {
   padding: 10px 20px;
 }
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: lightgray;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 15px;
+  background: gray;
+}
