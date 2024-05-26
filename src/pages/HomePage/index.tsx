@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Header from '../../components/feature/Header';
 import { Box, Container, Stack, Tab, Tabs, Typography } from '@mui/material';
 import buySubscriptionImage from '../../images/buy_subscription.jpg';
@@ -26,8 +26,6 @@ const HomePage = () => {
       skip: !userAuthData.id && !userAuthData.token,
     },
   );
-
-  console.log(user);
 
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [isOpenSubscriptionDialog, setOpenSubscriptionDialog] =

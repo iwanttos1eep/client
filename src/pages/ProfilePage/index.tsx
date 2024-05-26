@@ -11,8 +11,21 @@ import React from 'react';
 import Header from '../../components/feature/Header';
 import { stringAvatar } from '../../utils/stringAvatar';
 import Footer from '../../components/feature/Footer';
+import { useAppSelector } from '../../hooks/store';
+import { selectAuth } from '../../store/slice/authSlice';
+import { useGetUserByIdQuery } from '../../store/api/userApi';
 
 const ProfilePage = () => {
+  const userAuthData = useAppSelector(selectAuth);
+  const { data: user } = useGetUserByIdQuery(
+    { userId: userAuthData.id ?? 0, token: userAuthData.token ?? '' },
+    {
+      skip: !userAuthData.id && !userAuthData.token,
+    },
+  );
+
+  console.log(user);
+
   return (
     <Stack>
       <Header
@@ -49,20 +62,24 @@ const ProfilePage = () => {
                   }}
                 />
               }
-              title={
-                <>
-                  <Typography variant="h3">Никита Русаков</Typography>
-                </>
-              }
+              title={<Typography variant="h3">{user?.username}</Typography>}
               subheader={
                 <Stack gap="0.5rem">
-                  <Typography>Последний визит: Сентябрь 14, 2016</Typography>
-                  <Typography>rusakov@mail.ru</Typography>
-                  <Typography>Роль: Пользователь</Typography>
                   <Typography>
-                    Абонемент: Безлимитная карта на 3 месяца
+                    Последний визит:
+                    {user?.enteredAt?.toString()}
                   </Typography>
-                  <Typography>Взятый инвентарь: Полотенце</Typography>
+                  <Typography>{user?.email}</Typography>
+                  <Typography>
+                    Роль:{' '}
+                    {user?.roles?.map((role, index) => (
+                      <span key={index}>{role.name}</span>
+                    )) ?? <></>}
+                  </Typography>
+                  <Typography>
+                    Абонемент: !!!Безлимитная карта на 3 месяца
+                  </Typography>
+                  <Typography>Взятый инвентарь: !!!Полотенце</Typography>
                 </Stack>
               }
             />
