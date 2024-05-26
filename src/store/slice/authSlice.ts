@@ -15,11 +15,12 @@ export const authSlice = createSlice({
           ...action.payload,
         }),
       );
-      state = action.payload;
+      // Обновляем состояние, используя Spread оператор
+      return { ...state, ...action.payload };
     },
     logOut: (state) => {
       localStorage.clear();
-      state = {};
+      return {}; // Возвращаем пустой объект
     },
   },
 });
