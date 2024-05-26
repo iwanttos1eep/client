@@ -8,8 +8,8 @@ export interface IUser {
   password: string;
   status?: string;
   username: string;
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   roles?: {
     id: number;
     name: ERoles;

@@ -15,6 +15,10 @@ import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { logOut, selectAuth } from '../../store/slice/authSlice';
 import { useNavigate } from 'react-router-dom';
 import { useGetUserByIdQuery } from '../../store/api/userApi';
+import {
+  useAddUserToSubscriptionMutation,
+  useGetSubscriptionsQuery,
+} from '../../store/api/subscription';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -26,6 +30,13 @@ const HomePage = () => {
       skip: !userAuthData.id && !userAuthData.token,
     },
   );
+  const { data: subscriptions } = useGetSubscriptionsQuery(
+    userAuthData.token ?? '',
+    {
+      skip: !userAuthData.token,
+    },
+  );
+  const [addUserToSubscription] = useAddUserToSubscriptionMutation();
 
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [isOpenSubscriptionDialog, setOpenSubscriptionDialog] =
@@ -129,6 +140,15 @@ const HomePage = () => {
       <SubscriptionDialog
         open={isOpenSubscriptionDialog}
         onCLose={() => setOpenSubscriptionDialog(false)}
+        onAccept={(subscriptionId) => {
+          addUserToSubscription({
+            token: userAuthData.token ?? '',
+            subscriptionId,
+            userId: userAuthData.id ?? 0,
+          });
+        }}
+        user={user}
+        subscriptions={subscriptions}
       />
       <GroupSessionDialog
         open={isOpenGroupSessionDialog}
