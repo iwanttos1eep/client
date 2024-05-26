@@ -16,10 +16,10 @@ const UserVisit = () => {
           Регистрация
         </Button>
       </Stack>
-      <UserCard userName="Русаков Никита" />
+      {/* <UserCard userName="Русаков Никита" />
       <UserCard userName="Хуснуриялов Булат" />
       <UserCard userName="Кашапов Руслан" />
-      <UserCard userName="Галлямов Вадим" />
+      <UserCard userName="Галлямов Вадим" /> */}
       <VisitRegistrationDialog
         open={isVisitRegistration}
         onCLose={() => setVisitRegistration(false)}

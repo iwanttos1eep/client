@@ -3,9 +3,40 @@ import React, { useState } from 'react';
 import UserCard from '../../../../components/feature/UserCard';
 import NewUserDialog from './components/NewUserDialog';
 import { Search } from '@mui/icons-material';
+import { useAppSelector } from '../../../../hooks/store';
+import { selectAuth } from '../../../../store/slice/authSlice';
+import {
+  useCreateUserMutation,
+  useGetUsersQuery,
+} from '../../../../store/api/userApi';
+import { ERoles } from '../../../../interfaces/roles';
 
 const UsersInformation = () => {
   const [isCreateNewUser, setCreateNewUser] = useState<boolean>(false);
+
+  const userAuthData = useAppSelector(selectAuth);
+  const { data: users } = useGetUsersQuery(userAuthData.token ?? '', {
+    skip: !userAuthData.id && !userAuthData.token,
+  });
+  const [createNewUser, { data }] = useCreateUserMutation();
+
+  const createNewUserHandler = (obj: {
+    username: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    role?: ERoles;
+  }) => {
+    const { email, firstName, lastName, role, username } = obj;
+    createNewUser({
+      email,
+      firstName,
+      lastName,
+      roles: role ? [role] : undefined,
+      token: userAuthData.token ?? '',
+      username,
+    });
+  };
 
   return (
     <>
@@ -30,15 +61,13 @@ const UsersInformation = () => {
           </Button>
         </Stack>
         <Stack bgcolor="background.paper" direction="column" gap="1.5rem">
-          <UserCard userName="Русаков Никита" />
-          <UserCard userName="Хуснуриялов Булат" />
-          <UserCard userName="Кашапов Руслан" />
-          <UserCard userName="Галлямов Вадим" />
+          {users?.map((user) => <UserCard user={user} />)}
         </Stack>
       </Stack>
       <NewUserDialog
         open={isCreateNewUser}
         onCLose={() => setCreateNewUser(false)}
+        onAccept={createNewUserHandler}
       />
     </>
   );

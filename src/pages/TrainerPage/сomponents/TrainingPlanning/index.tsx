@@ -142,7 +142,7 @@ const TrainingPlanning = () => {
                         {row.date}
                       </TableCell>
                       <TableCell width={'50%'} align="right">
-                        <UserCard userName={row.user} />
+                        {/* <UserCard userName={row.user} /> */}
                       </TableCell>
                     </TableRow>
                   ))}

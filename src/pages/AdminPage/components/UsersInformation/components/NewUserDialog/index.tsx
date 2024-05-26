@@ -9,18 +9,30 @@ import {
   TextField,
 } from '@mui/material';
 import successImage from '../../../../../../images/success.svg';
+import { ERoles } from '../../../../../../interfaces/roles';
 
 interface INewUserDialogProps {
   open: boolean;
   onCLose: () => void;
+  onAccept: (obj: {
+    username: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    role?: ERoles;
+  }) => void;
 }
 
 const NewUserDialog = (props: INewUserDialogProps) => {
-  const { onCLose, open } = props;
+  const { onCLose, open, onAccept } = props;
   const [isSubmittedSubscription, setSubmittedSubscription] =
     useState<boolean>(false);
-  const [subscription, setSubscription] = useState<string>('');
-  const [role, setRole] = useState<string>('');
+
+  const [username, setUsername] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [role, setRole] = useState<ERoles>();
 
   return (
     <MainDialog
@@ -34,7 +46,16 @@ const NewUserDialog = (props: INewUserDialogProps) => {
         setSubmittedSubscription(false);
         onCLose();
       }}
-      onAccept={() => setSubmittedSubscription(true)}
+      onAccept={() => {
+        setSubmittedSubscription(true);
+        onAccept({
+          username,
+          firstName,
+          lastName,
+          email,
+          role,
+        });
+      }}
       maxWidth="md"
     >
       {isSubmittedSubscription ? (
@@ -52,20 +73,29 @@ const NewUserDialog = (props: INewUserDialogProps) => {
             label="Фамилия"
             variant="standard"
             fullWidth
-            value="Русаков"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
           />
-          <TextField label="Имя" variant="standard" fullWidth value="Никита" />
           <TextField
-            label="Отчество"
+            label="Имя"
             variant="standard"
             fullWidth
-            value="Станиславович"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+          <TextField
+            label="Логин"
+            variant="standard"
+            fullWidth
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
           <TextField
             label="Почта"
             variant="standard"
             fullWidth
-            value="nikitos@mail.ru"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <FormControl sx={{ minWidth: 120 }}>
             <InputLabel id="demo-simple-select-helper-label" size="small">
@@ -76,39 +106,14 @@ const NewUserDialog = (props: INewUserDialogProps) => {
               id="demo-simple-select-helper"
               value={role}
               label="Роль"
-              onChange={(event) => setRole(event.target.value)}
+              onChange={(event) => setRole(event.target.value as ERoles)}
               size="small"
             >
-              <MenuItem value="visitor">Посетитель</MenuItem>
-              <MenuItem value="trainer">Тренер</MenuItem>
+              <MenuItem value={ERoles.ROLE_USER}>Посетитель</MenuItem>
+              <MenuItem value={ERoles.ROLE_TRAINER}>Тренер</MenuItem>
+              <MenuItem value={ERoles.ROLE_ADMIN}>Админ</MenuItem>
             </Select>
           </FormControl>
-          {role === 'visitor' && (
-            <FormControl sx={{ minWidth: 120 }}>
-              <InputLabel id="demo-simple-select-helper-label" size="small">
-                Абонемент
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-helper-label"
-                id="demo-simple-select-helper"
-                value={subscription}
-                label="Абонемент"
-                onChange={(event) => setSubscription(event.target.value)}
-                size="small"
-              >
-                <MenuItem value={10}>Разовое посещение</MenuItem>
-                <MenuItem value={20}>
-                  Безлимитная карта на 1 месяц (ДНЕВНАЯ)
-                </MenuItem>
-                <MenuItem value={30}>
-                  Безлимитная карта на 1 месяц (ВЕСЬ ДЕНЬ)
-                </MenuItem>
-                <MenuItem value={40}>Безлимитная карта на 3 месяца</MenuItem>
-                <MenuItem value={50}>Безлимитная карта на 6 месяцев</MenuItem>
-                <MenuItem value={60}>Безлимитная карта на 12 месяцев</MenuItem>
-              </Select>
-            </FormControl>
-          )}
         </Stack>
       )}
     </MainDialog>

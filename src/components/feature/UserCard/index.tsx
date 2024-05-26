@@ -9,19 +9,22 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { stringAvatar } from '../../../utils/stringAvatar';
+import { IUser } from '../../../interfaces/user';
 
 interface IUserCardProps {
-  userName: string;
+  user: IUser;
 }
 
 const UserCard = (props: IUserCardProps) => {
-  const { userName } = props;
+  const { user } = props;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   return (
     <Card sx={{ width: '100%' }}>
       <CardHeader
-        avatar={<Avatar aria-label="recipe" {...stringAvatar(userName)} />}
+        avatar={
+          <Avatar aria-label="recipe" {...stringAvatar(user.username + ' ')} />
+        }
         action={
           <>
             <IconButton
@@ -42,8 +45,8 @@ const UserCard = (props: IUserCardProps) => {
             </Menu>
           </>
         }
-        title={userName}
-        subheader="Последний визит: Май 8, 2024"
+        title={`${user.firstName} ${user.lastName}`}
+        subheader={user.enteredAt?.toString() ?? user.leftAt?.toString() ?? ''}
       />
     </Card>
   );

@@ -39,7 +39,8 @@ const TrainingRow = (props: ITrainingRowProps) => {
           <Stack bgcolor="background.paper" direction="column" gap="1.5rem">
             <Button onClick={() => setExpandUsers(false)}>Свернуть</Button>
             {row.users.map((user) => (
-              <UserCard userName={user} />
+              // <UserCard userName={user} />
+              <></>
             ))}
           </Stack>
         ) : (
