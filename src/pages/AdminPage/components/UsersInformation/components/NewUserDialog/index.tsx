@@ -69,7 +69,7 @@ const NewUserDialog = (props: INewUserDialogProps) => {
         </Stack>
       ) : (
         <Stack gap="1rem">
-          <TextField
+          {/* <TextField
             label="Фамилия"
             variant="standard"
             fullWidth
@@ -82,9 +82,9 @@ const NewUserDialog = (props: INewUserDialogProps) => {
             fullWidth
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
-          />
+          /> */}
           <TextField
-            label="Логин"
+            label="Фамилия Имя"
             variant="standard"
             fullWidth
             value={username}

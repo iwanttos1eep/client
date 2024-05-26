@@ -23,7 +23,10 @@ const UserCard = (props: IUserCardProps) => {
     <Card sx={{ width: '100%' }}>
       <CardHeader
         avatar={
-          <Avatar aria-label="recipe" {...stringAvatar(user.username + ' ')} />
+          <Avatar
+            aria-label="recipe"
+            {...stringAvatar(user.username + ' User')}
+          />
         }
         action={
           <>
@@ -45,7 +48,7 @@ const UserCard = (props: IUserCardProps) => {
             </Menu>
           </>
         }
-        title={`${user.firstName} ${user.lastName}`}
+        title={`${user.username}`}
         subheader={user.enteredAt?.toString() ?? user.leftAt?.toString() ?? ''}
       />
     </Card>
