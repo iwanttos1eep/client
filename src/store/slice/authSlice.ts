@@ -8,10 +8,7 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setUserToLocalStorage: (
-      state,
-      action: PayloadAction<IAuthLoginResponse>,
-    ) => {
+    setUser: (state, action: PayloadAction<IAuthLoginResponse>) => {
       localStorage.setItem(
         'user',
         JSON.stringify({
@@ -20,9 +17,13 @@ export const authSlice = createSlice({
       );
       state = action.payload;
     },
+    logOut: (state) => {
+      localStorage.clear();
+      state = {};
+    },
   },
 });
 
-export const selectAuth = (state: RootState) => state.authApi;
-export const { setUserToLocalStorage } = authSlice.actions;
+export const selectAuth = (state: RootState) => state.auth;
+export const { setUser, logOut } = authSlice.actions;
 export default authSlice.reducer;

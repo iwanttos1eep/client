@@ -1,13 +1,4 @@
-import {
-  AppBar,
-  Box,
-  Button,
-  Container,
-  CssBaseline,
-  Stack,
-  Toolbar,
-  Typography,
-} from '@mui/material';
+import { AppBar, Box, Button, Container, Stack, Toolbar } from '@mui/material';
 import React from 'react';
 
 type TNavItem = {
@@ -22,6 +13,7 @@ interface IHeaderProps {
 
 const Header = (props: IHeaderProps) => {
   const { navItems, headerLogo } = props;
+
   return (
     <>
       <AppBar component="div">

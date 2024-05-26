@@ -1,13 +1,24 @@
-import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
 import AdminPAge from './pages/AdminPage';
 import TrainerPage from './pages/TrainerPage';
 import ProfilePage from './pages/ProfilePage';
 import AboutPage from './pages/AboutPage';
-
+import { useAppDispatch } from './hooks/store';
+import { IAuthLoginResponse } from './interfaces/auth';
+import { setUser } from './store/slice/authSlice';
 const RouterWrapper = () => {
+  const dispatch = useAppDispatch();
+  const user: IAuthLoginResponse | {} = JSON.parse(
+    localStorage.getItem('user') ?? '{}',
+  );
+
+  useEffect(() => {
+    dispatch(setUser(user));
+  }, []);
+
   return (
     <Routes>
       <Route path="/" Component={HomePage} />

@@ -11,8 +11,15 @@ import SubscriptionDialog from './components/SubscriptionDialog';
 import GroupSessionDialog from './components/GroupSessionDialog';
 import PersonalSessionDialog from './components/PersonalSessionDialog';
 import Footer from '../../components/feature/Footer';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import { logOut, selectAuth } from '../../store/slice/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
+  const navigate = useNavigate();
+  const user = useAppSelector(selectAuth);
+  const dispatch = useAppDispatch();
+
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [isOpenSubscriptionDialog, setOpenSubscriptionDialog] =
     useState<boolean>(false);
@@ -20,6 +27,11 @@ const HomePage = () => {
     useState<boolean>(false);
   const [isOpenPersonalSessionDialog, setOpenPersonalSessionDialog] =
     useState<boolean>(false);
+
+  const logOutHandler = () => {
+    dispatch(logOut());
+    navigate('/login');
+  };
 
   return (
     <Stack>
@@ -39,7 +51,7 @@ const HomePage = () => {
           },
           {
             title: 'выйти',
-            onClick() {},
+            onClick: logOutHandler,
           },
         ]}
       />
