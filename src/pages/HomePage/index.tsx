@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../../components/feature/Header';
 import { Box, Container, Stack, Tab, Tabs, Typography } from '@mui/material';
 import buySubscriptionImage from '../../images/buy_subscription.jpg';
@@ -14,11 +14,20 @@ import Footer from '../../components/feature/Footer';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { logOut, selectAuth } from '../../store/slice/authSlice';
 import { useNavigate } from 'react-router-dom';
+import { useGetUserByIdQuery } from '../../store/api/userApi';
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const user = useAppSelector(selectAuth);
+  const userAuthData = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
+  const { data: user } = useGetUserByIdQuery(
+    { userId: userAuthData.id ?? 0, token: userAuthData.token ?? '' },
+    {
+      skip: !userAuthData.id && !userAuthData.token,
+    },
+  );
+
+  console.log(user);
 
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [isOpenSubscriptionDialog, setOpenSubscriptionDialog] =

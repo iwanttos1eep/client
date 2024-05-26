@@ -8,7 +8,7 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<IAuthLoginResponse>) => {
+    setUserAuthData: (state, action: PayloadAction<IAuthLoginResponse>) => {
       localStorage.setItem(
         'user',
         JSON.stringify({
@@ -26,5 +26,5 @@ export const authSlice = createSlice({
 });
 
 export const selectAuth = (state: RootState) => state.auth;
-export const { setUser, logOut } = authSlice.actions;
+export const { setUserAuthData, logOut } = authSlice.actions;
 export default authSlice.reducer;

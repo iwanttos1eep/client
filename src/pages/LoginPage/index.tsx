@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useUserLoginMutation } from '../../store/api/authApi';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/store';
-import { setUser } from '../../store/slice/authSlice';
+import { setUserAuthData } from '../../store/slice/authSlice';
 
 const LoginPage = () => {
   const [userName, setUserName] = useState<string>('');
@@ -25,7 +25,7 @@ const LoginPage = () => {
   useEffect(() => {
     if (isLoginSuccess && userLoginData) {
       navigate('/');
-      dispatch(setUser(userLoginData));
+      dispatch(setUserAuthData(userLoginData));
     }
   }, [dispatch, isLoginSuccess, navigate, userLoginData]);
 
