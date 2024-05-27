@@ -1,12 +1,8 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { IUser } from '../../interfaces/user';
 import { ERoles } from '../../interfaces/roles';
+import { commonApi } from './commonApi';
 
-export const userApi = createApi({
-  reducerPath: 'userApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:8080/api/',
-  }),
+export const userApi = commonApi.injectEndpoints({
   endpoints: (builder) => ({
     getUserById: builder.query<IUser, { userId: number; token: string }>({
       query: (data) => ({
@@ -14,6 +10,7 @@ export const userApi = createApi({
         method: 'GET',
         headers: { Authorization: `Bearer ${data.token}` },
       }),
+      providesTags: ['updateUser'],
     }),
     getUsers: builder.query<IUser[], string>({
       query: (token) => ({

@@ -1,16 +1,12 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { ISubscription } from '../../interfaces/subscription';
 import { IUser } from '../../interfaces/user';
+import { commonApi } from './commonApi';
 
-export const subscriptionApi = createApi({
-  reducerPath: 'subscriptionApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:8080/api/v1',
-  }),
+export const subscriptionApi = commonApi.injectEndpoints({
   endpoints: (builder) => ({
     getSubscriptions: builder.query<ISubscription[], string>({
       query: (token) => ({
-        url: `subscriptions`,
+        url: `v1/subscriptions`,
         method: 'GET',
         headers: { Authorization: `Bearer ${token}` },
       }),
@@ -21,11 +17,12 @@ export const subscriptionApi = createApi({
     >({
       query: (data) => {
         return {
-          url: `/users/${data.userId}/add-subscription?subscriptionId=${data.subscriptionId}`,
+          url: `v1/users/${data.userId}/add-subscription?subscriptionId=${data.subscriptionId}`,
           method: 'PUT',
           headers: { Authorization: `Bearer ${data.token}` },
         };
       },
+      invalidatesTags: ['updateUser'],
     }),
   }),
 });

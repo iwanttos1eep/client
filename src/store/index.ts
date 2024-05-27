@@ -1,14 +1,10 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 
-import { authApi } from './api/authApi';
 import authReducer from './slice/authSlice';
-import { userApi } from './api/userApi';
-import { subscriptionApi } from './api/subscription';
+import { commonApi } from './api/commonApi';
 
 const rootReducer = combineReducers({
-  [userApi.reducerPath]: userApi.reducer,
-  [authApi.reducerPath]: authApi.reducer,
-  [subscriptionApi.reducerPath]: subscriptionApi.reducer,
+  [commonApi.reducerPath]: commonApi.reducer,
   auth: authReducer,
 });
 
@@ -16,10 +12,7 @@ const setupStore = () => {
   return configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware()
-        .concat(authApi.middleware)
-        .concat(userApi.middleware)
-        .concat(subscriptionApi.middleware),
+      getDefaultMiddleware().concat(commonApi.middleware),
   });
 };
 
