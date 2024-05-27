@@ -35,9 +35,8 @@ const HomePage = () => {
   const dispatch = useAppDispatch();
   const {
     data: user,
-    isLoading,
-    isError,
-    isSuccess,
+    isError: isUserErrorQuery,
+    isSuccess: isUserSuccessQuery,
   } = useGetUserByIdQuery({
     userId: userAuthData.id ?? 0,
     token: userAuthData.token ?? '',
@@ -48,7 +47,10 @@ const HomePage = () => {
       skip: !userAuthData.token,
     },
   );
-  const [addUserToSubscription] = useAddUserToSubscriptionMutation();
+  const [
+    addUserToSubscription,
+    { isError: isSubErrorQuery, isSuccess: isSubSuccessQuery },
+  ] = useAddUserToSubscriptionMutation();
 
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [isOpenSubscriptionDialog, setOpenSubscriptionDialog] =
@@ -60,6 +62,8 @@ const HomePage = () => {
 
   const [isUserSuccess, setUserSuccess] = useState<boolean>(false);
   const [isUserError, setUserError] = useState<boolean>(false);
+  const [isSubSuccess, setSubSuccess] = useState<boolean>(false);
+  const [isSubError, setSubError] = useState<boolean>(false);
 
   const logOutHandler = () => {
     dispatch(logOut());
@@ -67,12 +71,20 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    setUserSuccess(isSuccess);
-  }, [isSuccess]);
+    setUserSuccess(isUserSuccessQuery);
+  }, [isUserSuccessQuery]);
 
   useEffect(() => {
-    setUserError(isError);
-  }, [isError]);
+    setUserError(isUserErrorQuery);
+  }, [isUserErrorQuery]);
+
+  useEffect(() => {
+    setSubError(isSubErrorQuery);
+  }, [isSubErrorQuery]);
+
+  useEffect(() => {
+    setSubSuccess(isSubSuccessQuery);
+  }, [isSubSuccessQuery]);
 
   return (
     <Stack>
@@ -169,6 +181,7 @@ const HomePage = () => {
             subscriptionId,
             userId: userAuthData.id ?? 0,
           });
+          setOpenSubscriptionDialog(false);
         }}
         user={user}
         subscriptions={subscriptions}
@@ -183,21 +196,27 @@ const HomePage = () => {
       />
       <Footer />
       <Snackbar
-        open={isUserError}
+        open={isUserError || isSubError}
         autoHideDuration={3000}
-        onClose={() => setUserError(false)}
+        onClose={() => {
+          setUserError(false);
+          setSubError(false);
+        }}
       >
         <Alert severity="error" variant="filled">
           Ошибка
         </Alert>
       </Snackbar>
       <Snackbar
-        open={isUserSuccess}
+        open={isUserSuccess || isSubSuccess}
         autoHideDuration={3000}
-        onClose={() => setUserSuccess(false)}
+        onClose={() => {
+          setUserSuccess(false);
+          setSubSuccess(false);
+        }}
       >
         <Alert severity="success" variant="filled">
-          Вы успешно вошли
+          Успех!
         </Alert>
       </Snackbar>
     </Stack>
