@@ -1,6 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../../components/feature/Header';
-import { Box, Container, Stack, Tab, Tabs, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Container,
+  Snackbar,
+  Stack,
+  Tab,
+  Tabs,
+  Typography,
+} from '@mui/material';
 import buySubscriptionImage from '../../images/buy_subscription.jpg';
 import groupTrainingImage from '../../images/group_training_sessions.jpg';
 import personalTrainingImage from '../../images/personal_training_sessions.jpg';
@@ -24,12 +33,15 @@ const HomePage = () => {
   const navigate = useNavigate();
   const userAuthData = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
-  const { data: user } = useGetUserByIdQuery(
-    { userId: userAuthData.id ?? 0, token: userAuthData.token ?? '' },
-    {
-      skip: !userAuthData.id && !userAuthData.token,
-    },
-  );
+  const {
+    data: user,
+    isLoading,
+    isError,
+    isSuccess,
+  } = useGetUserByIdQuery({
+    userId: userAuthData.id ?? 0,
+    token: userAuthData.token ?? '',
+  });
   const { data: subscriptions } = useGetSubscriptionsQuery(
     userAuthData.token ?? '',
     {
@@ -46,10 +58,21 @@ const HomePage = () => {
   const [isOpenPersonalSessionDialog, setOpenPersonalSessionDialog] =
     useState<boolean>(false);
 
+  const [isUserSuccess, setUserSuccess] = useState<boolean>(false);
+  const [isUserError, setUserError] = useState<boolean>(false);
+
   const logOutHandler = () => {
     dispatch(logOut());
     navigate('/login');
   };
+
+  useEffect(() => {
+    setUserSuccess(isSuccess);
+  }, [isSuccess]);
+
+  useEffect(() => {
+    setUserError(isError);
+  }, [isError]);
 
   return (
     <Stack>
@@ -159,6 +182,24 @@ const HomePage = () => {
         open={isOpenPersonalSessionDialog}
       />
       <Footer />
+      <Snackbar
+        open={isUserError}
+        autoHideDuration={3000}
+        onClose={() => setUserError(false)}
+      >
+        <Alert severity="error" variant="filled">
+          Ошибка
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={isUserSuccess}
+        autoHideDuration={3000}
+        onClose={() => setUserSuccess(false)}
+      >
+        <Alert severity="success" variant="filled">
+          Вы успешно вошли
+        </Alert>
+      </Snackbar>
     </Stack>
   );
 };
