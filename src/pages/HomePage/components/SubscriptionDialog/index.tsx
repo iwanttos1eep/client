@@ -59,6 +59,13 @@ const SubscriptionDialog = (props: ISubscriptionDialogProps) => {
           value={user?.email}
           disabled
         />
+        <TextField
+          label="Ваш текущий тариф"
+          variant="standard"
+          fullWidth
+          value={user?.subscription?.name}
+          disabled
+        />
         <FormControl sx={{ minWidth: 120 }}>
           <InputLabel id="demo-simple-select-helper-label" size="small">
             Абонемент

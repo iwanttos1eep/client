@@ -14,4 +14,16 @@ export interface IUser {
     id: number;
     name: ERoles;
   }[];
+  subscription?: {
+    id: number;
+    name: string;
+    price: number;
+  };
+  inventoryList?: {
+    id: number;
+    name: string;
+    pickedAt?: Date;
+    returnAt?: Date;
+    status?: string;
+  }[];
 }
