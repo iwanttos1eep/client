@@ -86,21 +86,33 @@ const HomePage = () => {
     setSubSuccess(isSubSuccessQuery);
   }, [isSubSuccessQuery]);
 
+  useEffect(() => {
+    if (isUserError) {
+      navigate('/login');
+    }
+  }, [isUserError]);
+
   return (
     <Stack>
       <Header
         headerLogo={{
           title: 'Главная',
-          onClick() {},
+          onClick() {
+            navigate('/');
+          },
         }}
         navItems={[
           {
             title: 'О нас',
-            onClick() {},
+            onClick() {
+              navigate('/about');
+            },
           },
           {
             title: 'Мой профиль',
-            onClick() {},
+            onClick() {
+              navigate('/profile');
+            },
           },
           {
             title: 'выйти',
