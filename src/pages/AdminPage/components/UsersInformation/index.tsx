@@ -7,7 +7,7 @@ import { useAppSelector } from '../../../../hooks/store';
 import { selectAuth } from '../../../../store/slice/authSlice';
 import {
   useCreateUserMutation,
-  useGetUsersQuery,
+  useGetUsersByUsernameQuery,
 } from '../../../../store/api/userApi';
 import { ERoles } from '../../../../interfaces/roles';
 
@@ -15,11 +15,17 @@ const UsersInformation = () => {
   const [isCreateNewUser, setCreateNewUser] = useState<boolean>(false);
 
   const userAuthData = useAppSelector(selectAuth);
-  const { data: users } = useGetUsersQuery(userAuthData.token ?? '', {
-    skip: !userAuthData.id && !userAuthData.token,
-  });
-  const [createNewUser, { data }] = useCreateUserMutation();
 
+  const [createNewUser, { data }] = useCreateUserMutation();
+  const [username, setUsername] = useState<string>('');
+  const {
+    data: users,
+    isLoading: isUserLoadingQuery,
+    isError: isUserErrorQuery,
+  } = useGetUsersByUsernameQuery({
+    username,
+    token: userAuthData.token ?? '',
+  });
   const createNewUserHandler = (obj: {
     username: string;
     firstName: string;
@@ -36,6 +42,10 @@ const UsersInformation = () => {
       token: userAuthData.token ?? '',
       username,
     });
+  };
+
+  const searchUserByUsernameHandler = () => {
+    if (!userAuthData.token) return;
   };
 
   return (
@@ -55,8 +65,18 @@ const UsersInformation = () => {
       </Stack>
       <Stack gap="1.5rem">
         <Stack direction="row" gap="1rem">
-          <TextField label="Поиск" fullWidth variant="standard" />
-          <Button variant="contained" color="success" endIcon={<Search />}>
+          <TextField
+            label="Поиск"
+            fullWidth
+            variant="standard"
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <Button
+            variant="contained"
+            color="success"
+            endIcon={<Search />}
+            onClick={searchUserByUsernameHandler}
+          >
             Поиск
           </Button>
         </Stack>

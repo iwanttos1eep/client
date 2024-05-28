@@ -19,6 +19,17 @@ export const userApi = commonApi.injectEndpoints({
         headers: { Authorization: `Bearer ${token}` },
       }),
     }),
+    getUsersByUsername: builder.query<
+      IUser[],
+      { username: string; token: string }
+    >({
+      query: (data) => ({
+        url: `v1/users/search?name=${data.username}`,
+        method: 'GET',
+        headers: { Authorization: `Bearer ${data.token}` },
+      }),
+      providesTags: ['updateUser'],
+    }),
     createUser: builder.mutation<
       IUser,
       {
@@ -48,4 +59,6 @@ export const {
   useGetUsersQuery,
   useLazyGetUsersQuery,
   useCreateUserMutation,
+  useGetUsersByUsernameQuery,
+  useLazyGetUsersByUsernameQuery,
 } = userApi;
