@@ -9,82 +9,77 @@ import {
   Stack,
   TextField,
 } from '@mui/material';
-import successImage from '../../../../../images/success.svg';
+import { IUser } from '../../../../../interfaces/user';
+import { EStatuses } from '../../../../../interfaces/statuses';
 
 interface IVisitRegistrationDialogProps {
   open: boolean;
   onCLose: () => void;
+  users?: IUser[];
+  onAccept: (selectedUserId: number, status: EStatuses) => void;
 }
 
 const VisitRegistrationDialog = (props: IVisitRegistrationDialogProps) => {
-  const { onCLose, open } = props;
-  const [isSubmittedSubscription, setSubmittedSubscription] =
-    useState<boolean>(false);
-  const [userStatus, setUserStatus] = useState<string>('');
-
-  const users = [
-    'Никита Русаков',
-    'Хуснуриялов Булат',
-    'Кашапов Руслан',
-    'Галлямов Вадим',
-  ];
+  const { onCLose, open, users, onAccept } = props;
+  const [userStatus, setUserStatus] = useState<EStatuses>();
+  const [selectedUserId, setSelectedUserId] = useState<number>();
 
   return (
     <MainDialog
       open={open}
-      dialogTitle={
-        isSubmittedSubscription ? 'Подтверждено' : 'Регистрация посещения'
-      }
+      dialogTitle={'Регистрация посещения'}
       onClose={() => {
-        setSubmittedSubscription(false);
         onCLose();
       }}
-      onAccept={() => setSubmittedSubscription(true)}
+      onAccept={() => {
+        if (!selectedUserId || !userStatus) return;
+
+        onAccept(selectedUserId, userStatus);
+      }}
       maxWidth="md"
     >
-      {isSubmittedSubscription ? (
-        <Stack
-          width="100%"
-          height="100%"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <img src={successImage} height="400px" alt="successImage" />
-        </Stack>
-      ) : (
-        <Stack gap="1rem" margin="1rem 0">
-          <TextField
+      <Stack gap="1rem" margin="1rem 0">
+        <TextField
+          size="small"
+          label="Время"
+          value={new Date().toLocaleString()}
+        />
+        <FormControl sx={{ minWidth: 120 }}>
+          <InputLabel id="demo-simple-select-helper-label" size="small">
+            Пользователь
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-helper-label"
+            id="demo-simple-select-helper"
+            value={selectedUserId}
+            label="Пользователь"
+            onChange={(event) => setSelectedUserId(Number(event.target.value))}
             size="small"
-            label="Время"
-            value={new Date().toLocaleString()}
-          />
-          <Autocomplete
+          >
+            {users?.map((usr) => (
+              <MenuItem key={usr.id} value={usr.id}>
+                {usr.username}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl sx={{ minWidth: 120 }}>
+          <InputLabel id="demo-simple-select-helper-label" size="small">
+            Статус
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-helper-label"
+            id="demo-simple-select-helper"
+            value={userStatus}
+            label="Статус"
+            onChange={(event) => setUserStatus(event.target.value as EStatuses)}
             size="small"
-            fullWidth
-            id="combo-box-demo"
-            options={users}
-            renderInput={(params) => (
-              <TextField {...params} fullWidth label="Пользователь" />
-            )}
-          />
-          <FormControl sx={{ minWidth: 120 }}>
-            <InputLabel id="demo-simple-select-helper-label" size="small">
-              Статус
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-helper-label"
-              id="demo-simple-select-helper"
-              value={userStatus}
-              label="Статус"
-              onChange={(event) => setUserStatus(event.target.value)}
-              size="small"
-            >
-              <MenuItem value="come">Пришёл</MenuItem>
-              <MenuItem value="gone">Ушёл</MenuItem>
-            </Select>
-          </FormControl>
-        </Stack>
-      )}
+          >
+            <MenuItem value={EStatuses.COME}>Пришёл</MenuItem>
+            <MenuItem value={EStatuses.LEAVE}>Ушёл</MenuItem>
+          </Select>
+        </FormControl>
+      </Stack>
     </MainDialog>
   );
 };

@@ -13,15 +13,15 @@ import UserVisit from '../../components/feature/UserVisit';
 import Footer from '../../components/feature/Footer';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
-import { selectAuth } from '../../store/slice/authSlice';
+import { logOut, selectAuth } from '../../store/slice/authSlice';
 import { useGetUserByIdQuery } from '../../store/api/userApi';
 import { ERoles } from '../../interfaces/roles';
 
 const AdminPAge = () => {
   const [cardIndex, setCardIndex] = useState<number>(0);
   const navigate = useNavigate();
-  const userAuthData = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
+  const userAuthData = useAppSelector(selectAuth);
   const {
     data: user,
     isError: isUserErrorQuery,
@@ -30,6 +30,7 @@ const AdminPAge = () => {
     userId: userAuthData.id ?? 0,
     token: userAuthData.token ?? '',
   });
+  const role = user?.roles ? user?.roles[0] : undefined;
 
   const [isUserSuccess, setUserSuccess] = useState<boolean>(false);
   const [isUserError, setUserError] = useState<boolean>(false);
@@ -57,20 +58,33 @@ const AdminPAge = () => {
       <Header
         headerLogo={{
           title: 'Главная',
-          onClick() {},
+          onClick() {
+            if (role?.name === ERoles.ROLE_USER) {
+              navigate('/');
+            } else if (role?.name === ERoles.ROLE_ADMIN) {
+              navigate('/admin');
+            } else if (role?.name === ERoles.ROLE_TRAINER) navigate('/trainer');
+          },
         }}
         navItems={[
           {
             title: 'О нас',
-            onClick() {},
+            onClick() {
+              navigate('/about');
+            },
           },
           {
             title: 'Мой профиль',
-            onClick() {},
+            onClick() {
+              navigate('/profile');
+            },
           },
           {
             title: 'выйти',
-            onClick() {},
+            onClick() {
+              dispatch(logOut());
+              navigate('/login');
+            },
           },
         ]}
       />

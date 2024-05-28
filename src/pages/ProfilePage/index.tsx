@@ -102,8 +102,10 @@ const ProfilePage = () => {
               subheader={
                 <Stack gap="0.5rem">
                   <Typography>
-                    Последний визит:
-                    {user?.enteredAt?.toString()}
+                    Последний визит:{' '}
+                    {new Date(
+                      user?.enteredAt ?? user?.leftAt ?? '',
+                    ).toDateString()}
                   </Typography>
                   <Typography>{user?.email}</Typography>
                   <Typography>

@@ -1,6 +1,7 @@
 import { IUser } from '../../interfaces/user';
 import { ERoles } from '../../interfaces/roles';
 import { commonApi } from './commonApi';
+import { EStatuses } from '../../interfaces/statuses';
 
 export const userApi = commonApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -18,6 +19,7 @@ export const userApi = commonApi.injectEndpoints({
         method: 'GET',
         headers: { Authorization: `Bearer ${token}` },
       }),
+      providesTags: ['updateUserList'],
     }),
     getUsersByUsername: builder.query<
       IUser[],
@@ -29,6 +31,17 @@ export const userApi = commonApi.injectEndpoints({
         headers: { Authorization: `Bearer ${data.token}` },
       }),
       providesTags: ['updateUser'],
+    }),
+    updateUserStatus: builder.mutation<
+      boolean,
+      { userId: number; status: EStatuses; token: string }
+    >({
+      query: ({ status, token, userId }) => ({
+        url: `v1/users/${userId}/update-status?status=${status}`,
+        method: 'PUT',
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+      invalidatesTags: ['updateUserList'],
     }),
     createUser: builder.mutation<
       IUser,
@@ -61,4 +74,5 @@ export const {
   useCreateUserMutation,
   useGetUsersByUsernameQuery,
   useLazyGetUsersByUsernameQuery,
+  useUpdateUserStatusMutation,
 } = userApi;
