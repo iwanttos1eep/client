@@ -1,5 +1,5 @@
-import { Container, Stack, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import { Alert, Container, Snackbar, Stack, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import Header from '../../components/feature/Header';
 import ServiceCard from '../../components/feature/ServiceCard';
 import usersImage from '../../images/users.jpg';
@@ -11,9 +11,46 @@ import InventoryManagement from '../../components/feature/InventoryManagement';
 import WeeklySchedule from './components/WeeklySchedule';
 import UserVisit from '../../components/feature/UserVisit';
 import Footer from '../../components/feature/Footer';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import { selectAuth } from '../../store/slice/authSlice';
+import { useGetUserByIdQuery } from '../../store/api/userApi';
+import { ERoles } from '../../interfaces/roles';
 
 const AdminPAge = () => {
   const [cardIndex, setCardIndex] = useState<number>(0);
+  const navigate = useNavigate();
+  const userAuthData = useAppSelector(selectAuth);
+  const dispatch = useAppDispatch();
+  const {
+    data: user,
+    isError: isUserErrorQuery,
+    isSuccess: isUserSuccessQuery,
+  } = useGetUserByIdQuery({
+    userId: userAuthData.id ?? 0,
+    token: userAuthData.token ?? '',
+  });
+
+  const [isUserSuccess, setUserSuccess] = useState<boolean>(false);
+  const [isUserError, setUserError] = useState<boolean>(false);
+
+  useEffect(() => {
+    setUserSuccess(isUserSuccessQuery);
+  }, [isUserSuccessQuery]);
+
+  useEffect(() => {
+    setUserError(isUserErrorQuery);
+  }, [isUserErrorQuery]);
+
+  useEffect(() => {
+    if (
+      isUserError ||
+      (!user?.roles?.find((role) => role.name === ERoles.ROLE_ADMIN) &&
+        isUserSuccess)
+    ) {
+      navigate('/login');
+    }
+  }, [isUserError, isUserSuccess, user?.roles]);
 
   return (
     <Stack>
@@ -81,6 +118,28 @@ const AdminPAge = () => {
         </Container>
       </Stack>
       <Footer />
+      <Snackbar
+        open={isUserError}
+        autoHideDuration={3000}
+        onClose={() => {
+          setUserError(false);
+        }}
+      >
+        <Alert severity="error" variant="filled">
+          Ошибка
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={isUserSuccess}
+        autoHideDuration={3000}
+        onClose={() => {
+          setUserSuccess(false);
+        }}
+      >
+        <Alert severity="success" variant="filled">
+          Успех!
+        </Alert>
+      </Snackbar>
     </Stack>
   );
 };

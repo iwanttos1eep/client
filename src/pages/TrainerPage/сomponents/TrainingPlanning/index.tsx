@@ -111,8 +111,8 @@ const TrainingPlanning = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
-                  <TrainingRow row={row} />
+                {rows.map((row, index) => (
+                  <TrainingRow row={row} key={index} />
                 ))}
               </TableBody>
             </Table>

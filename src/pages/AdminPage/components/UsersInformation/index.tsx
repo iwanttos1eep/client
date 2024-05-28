@@ -61,7 +61,7 @@ const UsersInformation = () => {
           </Button>
         </Stack>
         <Stack bgcolor="background.paper" direction="column" gap="1.5rem">
-          {users?.map((user) => <UserCard user={user} />)}
+          {users?.map((user) => <UserCard user={user} key={user.id} />)}
         </Stack>
       </Stack>
       <NewUserDialog

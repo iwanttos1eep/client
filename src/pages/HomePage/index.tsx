@@ -28,6 +28,7 @@ import {
   useAddUserToSubscriptionMutation,
   useGetSubscriptionsQuery,
 } from '../../store/api/subscription';
+import { ERoles } from '../../interfaces/roles';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -87,10 +88,14 @@ const HomePage = () => {
   }, [isSubSuccessQuery]);
 
   useEffect(() => {
-    if (isUserError) {
+    if (
+      isUserError ||
+      (!user?.roles?.find((role) => role.name === ERoles.ROLE_USER) &&
+        isUserSuccess)
+    ) {
       navigate('/login');
     }
-  }, [isUserError]);
+  }, [isUserError, isUserSuccess, user?.roles]);
 
   return (
     <Stack>
