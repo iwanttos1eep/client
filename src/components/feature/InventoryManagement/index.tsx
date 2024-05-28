@@ -1,8 +1,13 @@
 import {
   Autocomplete,
   Button,
+  FormControl,
   IconButton,
+  InputLabel,
+  MenuItem,
   Paper,
+  Select,
+  SelectChangeEvent,
   Stack,
   Table,
   TableBody,
@@ -17,36 +22,61 @@ import React, { useState } from 'react';
 import MainDialog from '../MainDialog';
 import successImage from '../../../images/success.svg';
 import { Remove } from '@mui/icons-material';
+import {
+  useAssignUserToInventoryMutation,
+  useGetInventoryQuery,
+  useRemoveUserFromInventoryMutation,
+} from '../../../store/api/inventoryApi';
+import { useAppSelector } from '../../../hooks/store';
+import { selectAuth } from '../../../store/slice/authSlice';
+import { useGetUsersQuery } from '../../../store/api/userApi';
+import { EStatuses } from '../../../interfaces/statuses';
 
 const InventoryManagement = () => {
   const [isOpenDialog, setOpenDialog] = useState<boolean>(false);
   const [isSubmittedSubscription, setSubmittedSubscription] =
     useState<boolean>(false);
+  const userAuthData = useAppSelector(selectAuth);
+  const [selectedUserId, setSelectedUserId] = useState<number>();
+  const [
+    assignUserToInventory,
+    { isError: isAssignErrorQuery, isSuccess: isAssignSuccessQuery },
+  ] = useAssignUserToInventoryMutation();
 
-  const rows = [
-    {
-      name: 'Полотенце',
-    },
-    {
-      name: 'Коврик гимнастический',
-    },
-    {
-      name: 'Скакалка',
-    },
-    {
-      name: 'Эспандер',
-    },
-    {
-      name: 'Массажный ролл',
-    },
-  ];
+  const [
+    removeUserFromInventory,
+    { isError: isRemoveErrorQuery, isSuccess: isRemoveSuccessQuery },
+  ] = useRemoveUserFromInventoryMutation();
 
-  const users = [
-    'Никита Русаков',
-    'Хуснуриялов Булат',
-    'Кашапов Руслан',
-    'Галлямов Вадим',
-  ];
+  const {
+    data: inventoryList,
+    isLoading: isInvLoadingQuery,
+    isError: isInvErrorQuery,
+  } = useGetInventoryQuery(userAuthData.token ?? '');
+  const {
+    data: users,
+    isError: isUserErrorQuery,
+    isSuccess: isUserSuccessQuery,
+  } = useGetUsersQuery(userAuthData.token ?? '');
+
+  const updateInventoryStatus = (
+    event: SelectChangeEvent<number>,
+    inventoryId: number,
+    userId: number,
+  ) => {
+    assignUserToInventory({
+      inventoryId,
+      token: userAuthData.token ?? '',
+      userId,
+    });
+  };
+
+  const removeUserFromInventoryHandler = (inventoryId: number) => {
+    removeUserFromInventory({
+      inventoryId,
+      token: userAuthData.token ?? '',
+    });
+  };
 
   return (
     <>
@@ -58,6 +88,7 @@ const InventoryManagement = () => {
           Добавить инвентарь
         </Button>
       </Stack>
+      <Typography variant="h4">Свободный инвентарь</Typography>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
@@ -65,8 +96,72 @@ const InventoryManagement = () => {
               <TableCell align="left" sx={{ fontWeight: 'bold' }}>
                 Позиция
               </TableCell>
-              <TableCell align="center" sx={{ fontWeight: 'bold' }}>
-                Количество
+              <TableCell align="right" sx={{ fontWeight: 'bold' }}>
+                Статус
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {inventoryList?.map(
+              (row) =>
+                (row.status === EStatuses.LEAVE || !row.status) && (
+                  <TableRow
+                    key={row.name}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell width={'50%'} align="left">
+                      {row.name}
+                    </TableCell>
+                    <TableCell width={'50%'} align="right">
+                      <Stack
+                        direction="row"
+                        alignItems="center"
+                        gap="1rem"
+                        justifyContent="flex-end"
+                      >
+                        <FormControl sx={{ minWidth: 120 }}>
+                          <InputLabel
+                            id="demo-simple-select-helper-label"
+                            size="small"
+                          >
+                            Пользователь
+                          </InputLabel>
+                          <Select
+                            labelId="demo-simple-select-helper-label"
+                            id="demo-simple-select-helper"
+                            value={selectedUserId}
+                            label="Пользователь"
+                            onChange={(e) =>
+                              updateInventoryStatus(
+                                e,
+                                row.id,
+                                Number(e.target.value) ?? 0,
+                              )
+                            }
+                            size="small"
+                          >
+                            {users?.map((usr) => (
+                              <MenuItem key={usr.id} value={usr.id}>
+                                {usr.username}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      </Stack>
+                    </TableCell>
+                  </TableRow>
+                ),
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Typography variant="h4">Занятый инвентарь</Typography>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="left" sx={{ fontWeight: 'bold' }}>
+                Позиция
               </TableCell>
               <TableCell align="right" sx={{ fontWeight: 'bold' }}>
                 Статус
@@ -74,77 +169,76 @@ const InventoryManagement = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow
-                key={row.name}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell width={'33%'} align="left">
-                  {row.name}
-                </TableCell>
-                <TableCell width={'33%'} align="center">
-                  1
-                </TableCell>
-                <TableCell width={'33%'} align="right">
-                  <Stack direction="row" alignItems="center" gap="1rem">
-                    <Autocomplete
-                      id="combo-box-demo"
-                      options={users}
-                      fullWidth
-                      renderInput={(params) => (
-                        <TextField {...params} label="Взявший пользователь" />
-                      )}
-                    />
-                    <IconButton>
-                      <Remove />
-                    </IconButton>
-                  </Stack>
-                </TableCell>
-              </TableRow>
-            ))}
+            {inventoryList?.map(
+              (row) =>
+                row.status === EStatuses.COME && (
+                  <TableRow
+                    key={row.name}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell width={'50%'} align="left">
+                      {row.name}
+                    </TableCell>
+                    <TableCell width={'50%'} align="right">
+                      <Stack
+                        direction="row"
+                        alignItems="center"
+                        gap="1rem"
+                        justifyContent="flex-end"
+                      >
+                        <IconButton
+                          onClick={() => removeUserFromInventoryHandler(row.id)}
+                        >
+                          <Remove />
+                        </IconButton>
+                      </Stack>
+                    </TableCell>
+                  </TableRow>
+                ),
+            )}
           </TableBody>
         </Table>
-        <MainDialog
-          open={isOpenDialog}
-          dialogTitle={
-            isSubmittedSubscription
-              ? 'Инвентарь добавлен'
-              : 'Добавление инвентаря'
-          }
-          onClose={() => {
-            setSubmittedSubscription(false);
-            setOpenDialog(false);
-          }}
-          onAccept={() => setSubmittedSubscription(true)}
-          maxWidth="md"
-        >
-          {isSubmittedSubscription ? (
-            <Stack
-              width="100%"
-              height="100%"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <img src={successImage} height="400px" alt="successImage" />
-            </Stack>
-          ) : (
-            <Stack gap="1rem">
-              <TextField
-                label="Название позиции"
-                variant="standard"
-                fullWidth
-                value="Гантели 6кг"
-              />
-              <TextField
-                label="Количество"
-                variant="standard"
-                fullWidth
-                value="2"
-              />
-            </Stack>
-          )}
-        </MainDialog>
       </TableContainer>
+      <MainDialog
+        open={isOpenDialog}
+        dialogTitle={
+          isSubmittedSubscription
+            ? 'Инвентарь добавлен'
+            : 'Добавление инвентаря'
+        }
+        onClose={() => {
+          setSubmittedSubscription(false);
+          setOpenDialog(false);
+        }}
+        onAccept={() => setSubmittedSubscription(true)}
+        maxWidth="md"
+      >
+        {isSubmittedSubscription ? (
+          <Stack
+            width="100%"
+            height="100%"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <img src={successImage} height="400px" alt="successImage" />
+          </Stack>
+        ) : (
+          <Stack gap="1rem">
+            <TextField
+              label="Название позиции"
+              variant="standard"
+              fullWidth
+              value="Гантели 6кг"
+            />
+            <TextField
+              label="Количество"
+              variant="standard"
+              fullWidth
+              value="2"
+            />
+          </Stack>
+        )}
+      </MainDialog>
     </>
   );
 };

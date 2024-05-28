@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const commonApi = createApi({
   reducerPath: 'commonApi',
-  tagTypes: ['updateUser', 'updateUserList'],
+  tagTypes: ['updateUser', 'updateUserList', 'updateInventory'],
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080/api/' }),
   endpoints: () => ({}),
 });
