@@ -76,10 +76,13 @@ const ProfilePage = () => {
                       <span key={index}>{role.name}</span>
                     )) ?? <></>}
                   </Typography>
+                  <Typography>Абонемент: {user?.subscription?.name}</Typography>
                   <Typography>
-                    Абонемент: !!!Безлимитная карта на 3 месяца
+                    Взятый инвентарь:{' '}
+                    {user?.inventoryList?.map((inventory) => (
+                      <span>{inventory.name}</span>
+                    ))}
                   </Typography>
-                  <Typography>Взятый инвентарь: !!!Полотенце</Typography>
                 </Stack>
               }
             />
