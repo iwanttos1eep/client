@@ -11,6 +11,20 @@ export const inventoryApi = commonApi.injectEndpoints({
       }),
       providesTags: ['updateInventory'],
     }),
+    createNewInventory: builder.mutation<
+      void,
+      { inventoryName: string; token: string }
+    >({
+      query: ({ inventoryName, token }) => ({
+        url: `v1/inventory`,
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+        body: {
+          name: inventoryName,
+        },
+      }),
+      invalidatesTags: ['updateInventory'],
+    }),
     assignUserToInventory: builder.mutation<
       void,
       { inventoryId: number; userId: number; token: string }
@@ -41,4 +55,5 @@ export const {
   useLazyGetInventoryQuery,
   useAssignUserToInventoryMutation,
   useRemoveUserFromInventoryMutation,
+  useCreateNewInventoryMutation,
 } = inventoryApi;

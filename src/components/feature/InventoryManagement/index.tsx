@@ -1,4 +1,5 @@
 import {
+  Alert,
   Autocomplete,
   Button,
   FormControl,
@@ -8,6 +9,7 @@ import {
   Paper,
   Select,
   SelectChangeEvent,
+  Snackbar,
   Stack,
   Table,
   TableBody,
@@ -18,12 +20,13 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MainDialog from '../MainDialog';
 import successImage from '../../../images/success.svg';
 import { Remove } from '@mui/icons-material';
 import {
   useAssignUserToInventoryMutation,
+  useCreateNewInventoryMutation,
   useGetInventoryQuery,
   useRemoveUserFromInventoryMutation,
 } from '../../../store/api/inventoryApi';
@@ -34,9 +37,8 @@ import { EStatuses } from '../../../interfaces/statuses';
 
 const InventoryManagement = () => {
   const [isOpenDialog, setOpenDialog] = useState<boolean>(false);
-  const [isSubmittedSubscription, setSubmittedSubscription] =
-    useState<boolean>(false);
   const userAuthData = useAppSelector(selectAuth);
+  const [inventoryName, setInventoryName] = useState<string>('');
   const [selectedUserId, setSelectedUserId] = useState<number>();
   const [
     assignUserToInventory,
@@ -48,9 +50,14 @@ const InventoryManagement = () => {
     { isError: isRemoveErrorQuery, isSuccess: isRemoveSuccessQuery },
   ] = useRemoveUserFromInventoryMutation();
 
+  const [
+    createNewInventory,
+    { isError: isCreateErrorQuery, isSuccess: isCreateSuccessQuery },
+  ] = useCreateNewInventoryMutation();
+
   const {
     data: inventoryList,
-    isLoading: isInvLoadingQuery,
+    isSuccess: isInvSuccessQuery,
     isError: isInvErrorQuery,
   } = useGetInventoryQuery(userAuthData.token ?? '');
   const {
@@ -58,6 +65,46 @@ const InventoryManagement = () => {
     isError: isUserErrorQuery,
     isSuccess: isUserSuccessQuery,
   } = useGetUsersQuery(userAuthData.token ?? '');
+
+  const [isUserSuccess, setUserSuccess] = useState<boolean>(false);
+  const [isUserError, setUserError] = useState<boolean>(false);
+
+  const [isInvSuccess, setInvSuccess] = useState<boolean>(false);
+  const [isInvError, setInvError] = useState<boolean>(false);
+
+  const [isCreateError, setCreateError] = useState<boolean>(false);
+  const [isCreateSuccess, setCreateSuccess] = useState<boolean>(false);
+
+  const [isRemoveError, setRemoveError] = useState<boolean>(false);
+  const [isRemoveSuccess, setRemoveSuccess] = useState<boolean>(false);
+
+  const [isAssignError, setAssignError] = useState<boolean>(false);
+  const [isAssignSuccess, setAssignSuccess] = useState<boolean>(false);
+
+  // useEffect(() => {
+  //   setUserSuccess(isUserSuccessQuery);
+  //   setUserError(isUserErrorQuery);
+  // }, [isUserSuccessQuery, isUserErrorQuery]);
+
+  // useEffect(() => {
+  //   setInvSuccess(isInvSuccessQuery);
+  //   setInvError(isInvErrorQuery);
+  // }, [isInvSuccessQuery, isInvErrorQuery]);
+
+  // useEffect(() => {
+  //   setCreateSuccess(isCreateSuccessQuery);
+  //   setCreateError(isCreateErrorQuery);
+  // }, [isCreateErrorQuery, isCreateSuccessQuery]);
+
+  // useEffect(() => {
+  //   setRemoveError(isRemoveErrorQuery);
+  //   setRemoveSuccess(isRemoveSuccessQuery);
+  // }, [isRemoveErrorQuery, isRemoveSuccessQuery]);
+
+  // useEffect(() => {
+  //   setAssignError(isAssignErrorQuery);
+  //   setAssignSuccess(isAssignSuccessQuery);
+  // }, [isAssignErrorQuery, isAssignSuccessQuery]);
 
   const updateInventoryStatus = (
     event: SelectChangeEvent<number>,
@@ -77,6 +124,17 @@ const InventoryManagement = () => {
       token: userAuthData.token ?? '',
     });
   };
+
+  const createInventoryHandler = () => {
+    createNewInventory({
+      inventoryName,
+      token: userAuthData.token ?? '',
+    });
+    setOpenDialog(false);
+  };
+
+  console.log(isCreateSuccessQuery);
+  console.log(isCreateSuccess);
 
   return (
     <>
@@ -102,11 +160,10 @@ const InventoryManagement = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {inventoryList?.map(
-              (row) =>
-                (row.status === EStatuses.LEAVE || !row.status) && (
+            {inventoryList?.map((row) => (
+              <Stack key={row.id} width="100%">
+                {(row.status === EStatuses.LEAVE || !row.status) && (
                   <TableRow
-                    key={row.name}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     <TableCell width={'50%'} align="left">
@@ -150,8 +207,9 @@ const InventoryManagement = () => {
                       </Stack>
                     </TableCell>
                   </TableRow>
-                ),
-            )}
+                )}
+              </Stack>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
@@ -169,9 +227,9 @@ const InventoryManagement = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {inventoryList?.map(
-              (row) =>
-                row.status === EStatuses.COME && (
+            {inventoryList?.map((row) => (
+              <Stack key={row.id}>
+                {row.status === EStatuses.COME && (
                   <TableRow
                     key={row.name}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -194,51 +252,73 @@ const InventoryManagement = () => {
                       </Stack>
                     </TableCell>
                   </TableRow>
-                ),
-            )}
+                )}
+              </Stack>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
       <MainDialog
         open={isOpenDialog}
-        dialogTitle={
-          isSubmittedSubscription
-            ? 'Инвентарь добавлен'
-            : 'Добавление инвентаря'
-        }
+        dialogTitle={'Добавление инвентаря'}
         onClose={() => {
-          setSubmittedSubscription(false);
           setOpenDialog(false);
         }}
-        onAccept={() => setSubmittedSubscription(true)}
+        onAccept={createInventoryHandler}
         maxWidth="md"
       >
-        {isSubmittedSubscription ? (
-          <Stack
-            width="100%"
-            height="100%"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <img src={successImage} height="400px" alt="successImage" />
-          </Stack>
-        ) : (
-          <Stack gap="1rem">
-            <TextField
-              label="Название позиции"
-              variant="standard"
-              fullWidth
-              value="Гантели 6кг"
-            />
-            <TextField
-              label="Количество"
-              variant="standard"
-              fullWidth
-              value="2"
-            />
-          </Stack>
-        )}
+        <Stack gap="1rem">
+          <TextField
+            label="Название позиции"
+            variant="standard"
+            fullWidth
+            value={inventoryName}
+            onChange={(e) => setInventoryName(e.target.value)}
+          />
+        </Stack>
       </MainDialog>
+      <Snackbar
+        open={
+          isAssignError ||
+          isCreateError ||
+          isInvError ||
+          isRemoveError ||
+          isUserError
+        }
+        autoHideDuration={3000}
+        onClose={() => {
+          setUserError(false);
+          setAssignError(false);
+          setCreateError(false);
+          setInvError(false);
+          setRemoveError(false);
+        }}
+      >
+        <Alert severity="error" variant="filled">
+          Ошибка
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={
+          isUserSuccess ||
+          isAssignSuccess ||
+          isCreateSuccess ||
+          isInvSuccess ||
+          isRemoveSuccess
+        }
+        autoHideDuration={3000}
+        onClose={() => {
+          setUserSuccess(false);
+          setAssignSuccess(false);
+          setCreateSuccess(false);
+          setInvSuccess(false);
+          setRemoveSuccess(false);
+        }}
+      >
+        <Alert severity="success" variant="filled">
+          Успех!
+        </Alert>
+      </Snackbar>
     </>
   );
 };
