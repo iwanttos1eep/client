@@ -59,7 +59,7 @@ const ProfilePage = () => {
               navigate('/');
             } else if (role?.name === ERoles.ROLE_ADMIN) {
               navigate('/admin');
-            } else navigate('/trainer');
+            } else if (role?.name === ERoles.ROLE_TRAINER) navigate('/trainer');
           },
         }}
         navItems={[
