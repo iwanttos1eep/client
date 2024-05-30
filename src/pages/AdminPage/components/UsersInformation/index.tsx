@@ -9,7 +9,7 @@ import {
   useCreateUserMutation,
   useGetUsersByUsernameQuery,
 } from '../../../../store/api/userApi';
-import { ERoles } from '../../../../interfaces/roles';
+import { ERoles } from '../../../../enums/roles';
 
 const UsersInformation = () => {
   const [isCreateNewUser, setCreateNewUser] = useState<boolean>(false);

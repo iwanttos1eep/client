@@ -10,7 +10,7 @@ import {
   TextField,
 } from '@mui/material';
 import { IUser } from '../../../../../interfaces/user';
-import { EStatuses } from '../../../../../interfaces/statuses';
+import { EStatuses } from '../../../../../enums/statuses';
 
 interface IVisitRegistrationDialogProps {
   open: boolean;

@@ -9,7 +9,7 @@ import {
   TextField,
 } from '@mui/material';
 import successImage from '../../../../../../images/success.svg';
-import { ERoles } from '../../../../../../interfaces/roles';
+import { ERoles } from '../../../../../../enums/roles';
 
 interface INewUserDialogProps {
   open: boolean;

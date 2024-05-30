@@ -1,4 +1,4 @@
-import { ERoles } from './roles';
+import { ERoles } from '../enums/roles';
 
 export interface IAuthLoginRequest {
   username: string;

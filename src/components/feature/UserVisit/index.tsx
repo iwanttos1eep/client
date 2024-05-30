@@ -8,7 +8,7 @@ import {
   useGetUsersQuery,
   useUpdateUserStatusMutation,
 } from '../../../store/api/userApi';
-import { EStatuses } from '../../../interfaces/statuses';
+import { EStatuses } from '../../../enums/statuses';
 
 const UserVisit = () => {
   const [isVisitRegistration, setVisitRegistration] = useState<boolean>(false);

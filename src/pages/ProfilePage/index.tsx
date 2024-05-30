@@ -17,7 +17,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { logOut, selectAuth } from '../../store/slice/authSlice';
 import { useGetUserByIdQuery } from '../../store/api/userApi';
 import { useNavigate } from 'react-router-dom';
-import { ERoles } from '../../interfaces/roles';
+import { ERoles } from '../../enums/roles';
 
 const ProfilePage = () => {
   const dispatch = useAppDispatch();

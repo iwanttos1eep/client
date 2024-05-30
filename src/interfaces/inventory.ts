@@ -1,4 +1,4 @@
-import { EStatuses } from './statuses';
+import { EStatuses } from '../enums/statuses';
 
 export interface IInventory {
   id: number;

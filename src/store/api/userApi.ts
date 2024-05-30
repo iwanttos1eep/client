@@ -1,7 +1,7 @@
 import { IUser } from '../../interfaces/user';
-import { ERoles } from '../../interfaces/roles';
+import { ERoles } from '../../enums/roles';
 import { commonApi } from './commonApi';
-import { EStatuses } from '../../interfaces/statuses';
+import { EStatuses } from '../../enums/statuses';
 
 export const userApi = commonApi.injectEndpoints({
   endpoints: (builder) => ({

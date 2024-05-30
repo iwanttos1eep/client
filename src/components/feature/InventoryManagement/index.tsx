@@ -32,7 +32,7 @@ import {
 import { useAppSelector } from '../../../hooks/store';
 import { selectAuth } from '../../../store/slice/authSlice';
 import { useGetUsersQuery } from '../../../store/api/userApi';
-import { EStatuses } from '../../../interfaces/statuses';
+import { EStatuses } from '../../../enums/statuses';
 
 const InventoryManagement = () => {
   const [isOpenDialog, setOpenDialog] = useState<boolean>(false);

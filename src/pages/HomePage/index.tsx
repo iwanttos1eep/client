@@ -28,7 +28,7 @@ import {
   useAddUserToSubscriptionMutation,
   useGetSubscriptionsQuery,
 } from '../../store/api/subscription';
-import { ERoles } from '../../interfaces/roles';
+import { ERoles } from '../../enums/roles';
 
 const HomePage = () => {
   const navigate = useNavigate();
