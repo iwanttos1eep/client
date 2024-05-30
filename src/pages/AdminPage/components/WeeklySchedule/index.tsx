@@ -1,48 +1,38 @@
 import {
+  Avatar,
+  AvatarGroup,
   Box,
   Button,
   Paper,
   Stack,
-  Tab,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Tabs,
   Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
-import TabPanel from '../../../../components/core/TabPanel';
 import NewScheduleDialog from './components/NewScheduleDialog';
+import { useAppSelector } from '../../../../hooks/store';
+import { selectAuth } from '../../../../store/slice/authSlice';
+import { useGetGroupTrainingsQuery } from '../../../../store/api/trainingApi';
+import UserCard from '../../../../components/feature/UserCard';
+import { stringAvatar } from '../../../../utils/stringAvatar';
 
 const WeeklySchedule = () => {
-  const [tabIndex, setTabIndex] = useState<number>(0);
   const [isAddSchedule, setAddSchedule] = useState<boolean>(false);
+  const [isExpandUsers, setExpandUsers] = useState<boolean>(false);
 
-  const rowsSunday = [
-    {
-      lesson: 'Stretch',
-      trainer: 'Елена Владимировна',
-      time: '10:00',
-    },
-    {
-      lesson: 'Super Strong',
-      trainer: 'Тамара Солдатова',
-      time: '12:00',
-    },
-    {
-      lesson: 'Hatha Yoga',
-      trainer: 'Регина Камиловна',
-      time: '13:00',
-    },
-    {
-      lesson: 'Pilates',
-      trainer: 'Айсылу Гурманова',
-      time: '16:00',
-    },
-  ];
+  const userAuthData = useAppSelector(selectAuth);
+  const {
+    data: trainings,
+    isError: isTrainingsErrorQuery,
+    isSuccess: isTrainingsSuccessQuery,
+  } = useGetGroupTrainingsQuery(userAuthData.token ?? '', {
+    skip: !userAuthData.token,
+  });
 
   return (
     <>
@@ -61,53 +51,70 @@ const WeeklySchedule = () => {
           display: 'flex',
         }}
       >
-        <Tabs
-          orientation="vertical"
-          variant="scrollable"
-          value={tabIndex}
-          onChange={(_, index) => setTabIndex(index)}
-          aria-label="Vertical tabs example"
-          sx={{ borderRight: 1, borderColor: 'divider' }}
-        >
-          <Tab label="Понедельник" />
-          <Tab label="Вторник" />
-          <Tab label="Среда" />
-          <Tab label="Четверг" />
-          <Tab label="Пятница" />
-          <Tab label="Суббота" />
-          <Tab label="Воскресенье" />
-        </Tabs>
-        <TabPanel value={tabIndex} index={0}>
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="a dense table">
-              <TableHead>
-                <TableRow>
-                  <TableCell align="left">Занятие</TableCell>
-                  <TableCell align="center">Тренер</TableCell>
-                  <TableCell align="right">Время</TableCell>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="a dense table">
+            <TableHead>
+              <TableRow>
+                <TableCell align="left">Занятие</TableCell>
+                <TableCell align="center">Тренер</TableCell>
+                <TableCell align="center">Время</TableCell>
+                <TableCell align="right">Кто придёт</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {trainings?.map((training, index) => (
+                <TableRow
+                  key={training.id}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell width={'25%'} align="left">
+                    {training.name}
+                  </TableCell>
+                  <TableCell width={'25%'} align="center">
+                    {training.trainer?.username}
+                  </TableCell>
+                  <TableCell width={'25%'} align="center">
+                    {training.date?.toDateString()}
+                  </TableCell>
+                  <TableCell width={'25%'} align="right">
+                    {isExpandUsers ? (
+                      <Stack
+                        bgcolor="background.paper"
+                        direction="column"
+                        gap="1.5rem"
+                      >
+                        <Button onClick={() => setExpandUsers(false)}>
+                          Свернуть
+                        </Button>
+                        {training?.users?.map((user) => (
+                          <UserCard user={user} />
+                        ))}
+                      </Stack>
+                    ) : (
+                      <AvatarGroup
+                        max={3}
+                        onClick={() => setExpandUsers(true)}
+                        sx={{
+                          cursor: 'pointer',
+                          '.MuiAvatar-root:hover': {
+                            background: 'red',
+                          },
+                        }}
+                      >
+                        {training?.users?.map((user) => (
+                          <Avatar
+                            key={user.id}
+                            {...stringAvatar(user.username)}
+                          />
+                        ))}
+                      </AvatarGroup>
+                    )}
+                  </TableCell>
                 </TableRow>
-              </TableHead>
-              <TableBody>
-                {rowsSunday.map((row, index) => (
-                  <TableRow
-                    key={index}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                    <TableCell width={'33%'} align="left">
-                      {row.lesson}
-                    </TableCell>
-                    <TableCell width={'33%'} align="center">
-                      {row.trainer}
-                    </TableCell>
-                    <TableCell width={'33%'} align="right">
-                      {row.time}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </TabPanel>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
         <NewScheduleDialog
           open={isAddSchedule}
           onCLose={() => setAddSchedule(false)}
