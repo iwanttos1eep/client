@@ -22,7 +22,6 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import MainDialog from '../MainDialog';
-import successImage from '../../../images/success.svg';
 import { Remove } from '@mui/icons-material';
 import {
   useAssignUserToInventoryMutation,
@@ -81,30 +80,30 @@ const InventoryManagement = () => {
   const [isAssignError, setAssignError] = useState<boolean>(false);
   const [isAssignSuccess, setAssignSuccess] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   setUserSuccess(isUserSuccessQuery);
-  //   setUserError(isUserErrorQuery);
-  // }, [isUserSuccessQuery, isUserErrorQuery]);
+  useEffect(() => {
+    setUserSuccess(isUserSuccessQuery);
+    setUserError(isUserErrorQuery);
+  }, [isUserSuccessQuery, isUserErrorQuery]);
 
-  // useEffect(() => {
-  //   setInvSuccess(isInvSuccessQuery);
-  //   setInvError(isInvErrorQuery);
-  // }, [isInvSuccessQuery, isInvErrorQuery]);
+  useEffect(() => {
+    setInvSuccess(isInvSuccessQuery);
+    setInvError(isInvErrorQuery);
+  }, [isInvSuccessQuery, isInvErrorQuery]);
 
-  // useEffect(() => {
-  //   setCreateSuccess(isCreateSuccessQuery);
-  //   setCreateError(isCreateErrorQuery);
-  // }, [isCreateErrorQuery, isCreateSuccessQuery]);
+  useEffect(() => {
+    setCreateSuccess(isCreateSuccessQuery);
+    setCreateError(isCreateErrorQuery);
+  }, [isCreateErrorQuery, isCreateSuccessQuery]);
 
-  // useEffect(() => {
-  //   setRemoveError(isRemoveErrorQuery);
-  //   setRemoveSuccess(isRemoveSuccessQuery);
-  // }, [isRemoveErrorQuery, isRemoveSuccessQuery]);
+  useEffect(() => {
+    setRemoveError(isRemoveErrorQuery);
+    setRemoveSuccess(isRemoveSuccessQuery);
+  }, [isRemoveErrorQuery, isRemoveSuccessQuery]);
 
-  // useEffect(() => {
-  //   setAssignError(isAssignErrorQuery);
-  //   setAssignSuccess(isAssignSuccessQuery);
-  // }, [isAssignErrorQuery, isAssignSuccessQuery]);
+  useEffect(() => {
+    setAssignError(isAssignErrorQuery);
+    setAssignSuccess(isAssignSuccessQuery);
+  }, [isAssignErrorQuery, isAssignSuccessQuery]);
 
   const updateInventoryStatus = (
     event: SelectChangeEvent<number>,
@@ -133,9 +132,6 @@ const InventoryManagement = () => {
     setOpenDialog(false);
   };
 
-  console.log(isCreateSuccessQuery);
-  console.log(isCreateSuccess);
-
   return (
     <>
       <Stack direction="row" gap="1rem" justifyContent="space-between">
@@ -160,10 +156,11 @@ const InventoryManagement = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {inventoryList?.map((row) => (
-              <Stack key={row.id} width="100%">
-                {(row.status === EStatuses.LEAVE || !row.status) && (
+            {inventoryList?.map(
+              (row) =>
+                (row.status === EStatuses.LEAVE || !row.status) && (
                   <TableRow
+                    key={row.id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     <TableCell width={'50%'} align="left">
@@ -207,9 +204,8 @@ const InventoryManagement = () => {
                       </Stack>
                     </TableCell>
                   </TableRow>
-                )}
-              </Stack>
-            ))}
+                ),
+            )}
           </TableBody>
         </Table>
       </TableContainer>
