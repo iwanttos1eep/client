@@ -10,6 +10,7 @@ export const trainingApi = commonApi.injectEndpoints({
         method: 'GET',
         headers: { Authorization: `Bearer ${token}` },
       }),
+      providesTags: ['updateTrainings'],
     }),
     createNewTraining: builder.mutation<
       ITraining,
@@ -20,6 +21,18 @@ export const trainingApi = commonApi.injectEndpoints({
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
       }),
+      invalidatesTags: ['updateTrainings'],
+    }),
+    deleteTraining: builder.mutation<
+      void,
+      { trainingId: number; token: string }
+    >({
+      query: ({ token, trainingId }) => ({
+        url: `v1/trainings/${trainingId}`,
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+      invalidatesTags: ['updateTrainings'],
     }),
   }),
 });
@@ -28,4 +41,5 @@ export const {
   useGetGroupTrainingsQuery,
   useLazyGetGroupTrainingsQuery,
   useCreateNewTrainingMutation,
+  useDeleteTrainingMutation,
 } = trainingApi;

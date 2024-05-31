@@ -3,6 +3,7 @@ import {
   AvatarGroup,
   Box,
   Button,
+  IconButton,
   Paper,
   Stack,
   Table,
@@ -19,11 +20,13 @@ import { useAppSelector } from '../../../../hooks/store';
 import { selectAuth } from '../../../../store/slice/authSlice';
 import {
   useCreateNewTrainingMutation,
+  useDeleteTrainingMutation,
   useGetGroupTrainingsQuery,
 } from '../../../../store/api/trainingApi';
 import UserCard from '../../../../components/feature/UserCard';
 import { stringAvatar } from '../../../../utils/stringAvatar';
 import NewTrainingDialog from './components/NewTrainingDialog';
+import { Delete } from '@mui/icons-material';
 
 const WeeklySchedule = () => {
   const [isAddSchedule, setAddSchedule] = useState<boolean>(false);
@@ -44,6 +47,11 @@ const WeeklySchedule = () => {
     { isError: isCreateErrorQuery, isSuccess: isCreateSuccessQuery },
   ] = useCreateNewTrainingMutation();
 
+  const [
+    deleteTraining,
+    { isError: isDeleteErrorQuery, isSuccess: isDeleteSuccessQuery },
+  ] = useDeleteTrainingMutation();
+
   const createNewTrainingHandler = (
     trainingName: string,
     trainerId: number,
@@ -55,6 +63,8 @@ const WeeklySchedule = () => {
       trainingName,
       token: userAuthData.token,
     });
+
+    setAddTraining(false);
   };
 
   return (
@@ -91,6 +101,7 @@ const WeeklySchedule = () => {
                 <TableCell align="center">Тренер</TableCell>
                 <TableCell align="center">Время</TableCell>
                 <TableCell align="right">Кто придёт</TableCell>
+                <TableCell align="right"></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -141,6 +152,18 @@ const WeeklySchedule = () => {
                         ))}
                       </AvatarGroup>
                     )}
+                  </TableCell>
+                  <TableCell>
+                    <IconButton
+                      onClick={() =>
+                        deleteTraining({
+                          trainingId: training.id,
+                          token: userAuthData.token ?? '',
+                        })
+                      }
+                    >
+                      <Delete />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               ))}
