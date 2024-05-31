@@ -1,10 +1,12 @@
 import {
+  Alert,
   Avatar,
   AvatarGroup,
   Box,
   Button,
   IconButton,
   Paper,
+  Snackbar,
   Stack,
   Table,
   TableBody,
@@ -14,7 +16,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NewScheduleDialog from './components/NewScheduleDialog';
 import { useAppSelector } from '../../../../hooks/store';
 import { selectAuth } from '../../../../store/slice/authSlice';
@@ -52,6 +54,30 @@ const WeeklySchedule = () => {
     { isError: isDeleteErrorQuery, isSuccess: isDeleteSuccessQuery },
   ] = useDeleteTrainingMutation();
 
+  const [isTrainingsError, setTrainingsError] = useState<boolean>(false);
+  const [isTrainingsSuccess, setTrainingsSuccess] = useState<boolean>(false);
+
+  const [isCreateError, setCreateError] = useState<boolean>(false);
+  const [isCreateSuccess, setCreateSuccess] = useState<boolean>(false);
+
+  const [isDeleteError, setDeleteError] = useState<boolean>(false);
+  const [isDeleteSuccess, setDeleteSuccess] = useState<boolean>(false);
+
+  useEffect(() => {
+    setTrainingsError(isTrainingsErrorQuery);
+    setTrainingsSuccess(isTrainingsSuccessQuery);
+  }, [isTrainingsErrorQuery, isTrainingsSuccessQuery]);
+
+  useEffect(() => {
+    setCreateError(isCreateErrorQuery);
+    setCreateSuccess(isCreateSuccessQuery);
+  }, [isCreateErrorQuery, isCreateSuccessQuery]);
+
+  useEffect(() => {
+    setDeleteError(isDeleteErrorQuery);
+    setDeleteSuccess(isDeleteSuccessQuery);
+  }, [isDeleteErrorQuery, isDeleteSuccessQuery]);
+
   const createNewTrainingHandler = (
     trainingName: string,
     trainerId: number,
@@ -80,9 +106,6 @@ const WeeklySchedule = () => {
             onClick={() => setAddTraining(true)}
           >
             Добавить тренировку
-          </Button>
-          <Button variant="contained" onClick={() => setAddSchedule(true)}>
-            Добавить в расписание
           </Button>
         </Stack>
       </Stack>
@@ -180,6 +203,32 @@ const WeeklySchedule = () => {
           onAccept={createNewTrainingHandler}
         />
       </Box>
+      <Snackbar
+        open={isCreateError || isDeleteError || isTrainingsError}
+        autoHideDuration={3000}
+        onClose={() => {
+          setCreateError(false);
+          setDeleteError(false);
+          setTrainingsError(false);
+        }}
+      >
+        <Alert severity="error" variant="filled">
+          Ошибка
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={isCreateSuccess || isDeleteSuccess || isTrainingsSuccess}
+        autoHideDuration={3000}
+        onClose={() => {
+          setCreateSuccess(false);
+          setDeleteSuccess(false);
+          setTrainingsSuccess(false);
+        }}
+      >
+        <Alert severity="success" variant="filled">
+          Успех!
+        </Alert>
+      </Snackbar>
     </>
   );
 };
