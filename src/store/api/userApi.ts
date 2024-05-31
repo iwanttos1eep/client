@@ -63,6 +63,13 @@ export const userApi = commonApi.injectEndpoints({
         };
       },
     }),
+    getUsersByRole: builder.query<IUser[], { role: ERoles; token: string }>({
+      query: ({ role, token }) => ({
+        url: `v1/users?role=${role}`,
+        method: 'GET',
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+    }),
   }),
 });
 
@@ -75,4 +82,6 @@ export const {
   useGetUsersByUsernameQuery,
   useLazyGetUsersByUsernameQuery,
   useUpdateUserStatusMutation,
+  useGetUsersByRoleQuery,
+  useLazyGetUsersByRoleQuery,
 } = userApi;

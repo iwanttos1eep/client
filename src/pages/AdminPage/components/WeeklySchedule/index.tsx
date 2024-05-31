@@ -17,13 +17,18 @@ import React, { useState } from 'react';
 import NewScheduleDialog from './components/NewScheduleDialog';
 import { useAppSelector } from '../../../../hooks/store';
 import { selectAuth } from '../../../../store/slice/authSlice';
-import { useGetGroupTrainingsQuery } from '../../../../store/api/trainingApi';
+import {
+  useCreateNewTrainingMutation,
+  useGetGroupTrainingsQuery,
+} from '../../../../store/api/trainingApi';
 import UserCard from '../../../../components/feature/UserCard';
 import { stringAvatar } from '../../../../utils/stringAvatar';
+import NewTrainingDialog from './components/NewTrainingDialog';
 
 const WeeklySchedule = () => {
   const [isAddSchedule, setAddSchedule] = useState<boolean>(false);
   const [isExpandUsers, setExpandUsers] = useState<boolean>(false);
+  const [isAddTraining, setAddTraining] = useState<boolean>(false);
 
   const userAuthData = useAppSelector(selectAuth);
   const {
@@ -34,15 +39,42 @@ const WeeklySchedule = () => {
     skip: !userAuthData.token,
   });
 
+  const [
+    createNewTraining,
+    { isError: isCreateErrorQuery, isSuccess: isCreateSuccessQuery },
+  ] = useCreateNewTrainingMutation();
+
+  const createNewTrainingHandler = (
+    trainingName: string,
+    trainerId: number,
+  ) => {
+    if (!userAuthData.token) return;
+
+    createNewTraining({
+      trainerId,
+      trainingName,
+      token: userAuthData.token,
+    });
+  };
+
   return (
     <>
       <Stack direction="row" gap="1rem" justifyContent="space-between">
         <Typography variant="h5" fontWeight="bold">
           Расписание на неделю
         </Typography>
-        <Button variant="contained" onClick={() => setAddSchedule(true)}>
-          Добавить в расписание
-        </Button>
+        <Stack direction="row" gap="1rem">
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => setAddTraining(true)}
+          >
+            Добавить тренировку
+          </Button>
+          <Button variant="contained" onClick={() => setAddSchedule(true)}>
+            Добавить в расписание
+          </Button>
+        </Stack>
       </Stack>
       <Box
         sx={{
@@ -118,6 +150,11 @@ const WeeklySchedule = () => {
         <NewScheduleDialog
           open={isAddSchedule}
           onCLose={() => setAddSchedule(false)}
+        />
+        <NewTrainingDialog
+          open={isAddTraining}
+          onCLose={() => setAddTraining(false)}
+          onAccept={createNewTrainingHandler}
         />
       </Box>
     </>
