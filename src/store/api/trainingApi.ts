@@ -14,12 +14,21 @@ export const trainingApi = commonApi.injectEndpoints({
     }),
     createNewTraining: builder.mutation<
       ITraining,
-      { trainingName: string; trainerId: number; token: string }
+      { trainingName: string; trainerId: number; date: Date; token: string }
     >({
-      query: ({ token, trainerId, trainingName }) => ({
-        url: `v1/trainings?trainingName=${trainingName}&trainerId=${trainerId}`,
+      query: ({ token, trainerId, trainingName, date }) => ({
+        // url: `v1/trainings?trainingName=${trainingName}&trainerId=${trainerId}`,
+        url: `v1/trainings`,
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
+        body: {
+          date,
+          type: ETrainings.GROUP,
+          name: trainingName,
+          trainer: {
+            id: trainerId,
+          },
+        },
       }),
       invalidatesTags: ['updateTrainings'],
     }),

@@ -81,12 +81,14 @@ const WeeklySchedule = () => {
   const createNewTrainingHandler = (
     trainingName: string,
     trainerId: number,
+    dateTime: Date,
   ) => {
     if (!userAuthData.token) return;
 
     createNewTraining({
       trainerId,
       trainingName,
+      date: dateTime,
       token: userAuthData.token,
     });
 
@@ -140,7 +142,15 @@ const WeeklySchedule = () => {
                     {training.trainer?.username}
                   </TableCell>
                   <TableCell width={'25%'} align="center">
-                    {training.date?.toDateString()}
+                    {training.date
+                      ? new Date(training.date).toLocaleDateString('ru-RU', {
+                          day: '2-digit',
+                          month: '2-digit',
+                          year: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })
+                      : ''}
                   </TableCell>
                   <TableCell width={'25%'} align="right">
                     {isExpandUsers ? (

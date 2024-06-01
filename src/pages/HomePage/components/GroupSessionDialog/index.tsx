@@ -129,7 +129,17 @@ const GroupSessionDialog = (props: IGroupSessionDialogProps) => {
                       sx={{ width: '50%', overflow: 'auto' }}
                       key={_.uniqueId()}
                     >
-                      {option[keyOf as keyof ITraining]?.toString()}
+                      {(keyOf as keyof ITraining) === 'date' &&
+                        option['date'] &&
+                        new Date(option['date']).toLocaleDateString('ru-RU', {
+                          day: '2-digit',
+                          month: '2-digit',
+                          year: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}
+                      {keyOf !== 'date' &&
+                        option[keyOf as keyof ITraining]?.toString()}
                     </ListItemText>
                   ),
                 )}
