@@ -16,202 +16,129 @@ import {
   Typography,
 } from '@mui/material';
 import _ from 'lodash';
+import { useAppSelector } from '../../../../hooks/store';
+import { selectAuth } from '../../../../store/slice/authSlice';
+import { useGetUserByIdQuery } from '../../../../store/api/userApi';
+import { ITraining } from '../../../../interfaces/training';
+import { useGetGroupTrainingsQuery } from '../../../../store/api/trainingApi';
 
 interface IGroupSessionDialogProps {
   open: boolean;
   onCLose: () => void;
-}
-
-interface ISessionOptions {
-  name: string;
-  surname: string;
-  type: string;
+  onAccept: (trainingId: number, userId: number) => void;
 }
 
 const GroupSessionDialog = (props: IGroupSessionDialogProps) => {
-  const { onCLose, open } = props;
-  const [isSubmittedSubscription, setSubmittedSubscription] =
-    useState<boolean>(false);
+  const { onCLose, open, onAccept } = props;
   const [isSessionListOpen, setSessionListOpen] = useState<boolean>(false);
-  const [sessionValue, setSessionValue] = useState<ISessionOptions>();
   const [dateSelect, setDateSelect] = useState<string>('');
   const [timeSelect, setTimeSelect] = useState<string>('');
+  const [selectedTraining, setSelectedTraining] = useState<ITraining>();
 
-  const sessionOptions: ISessionOptions[] = [
-    {
-      name: 'Ляйсан',
-      surname: 'Шахмаметова',
-      type: 'Стретчинг',
-    },
+  const userAuthData = useAppSelector(selectAuth);
+  const {
+    data: user,
+    isError: isUserErrorQuery,
+    isSuccess: isUserSuccessQuery,
+  } = useGetUserByIdQuery({
+    userId: userAuthData.id ?? 0,
+    token: userAuthData.token ?? '',
+  });
 
-    {
-      name: 'Владимир',
-      surname: 'Штангин',
-      type: 'Воркаут',
-    },
-
-    {
-      name: 'Яна',
-      surname: 'Петрова',
-      type: 'Аэробика',
-    },
-
-    {
-      name: 'Валентин',
-      surname: 'Кротов',
-      type: 'Кардио',
-    },
-
-    {
-      name: 'Дмитрий',
-      surname: 'Каневский',
-      type: 'Бег',
-    },
-  ];
+  const {
+    data: trainings,
+    isSuccess: isTrainingsSuccess,
+    isError: isTrainingsError,
+  } = useGetGroupTrainingsQuery(userAuthData.token ?? '');
 
   return (
     <MainDialog
       open={open}
-      dialogTitle={
-        isSubmittedSubscription ? 'Ваша заявка принята' : 'Групповые занятия'
-      }
+      dialogTitle={'Групповые занятия'}
       onClose={() => {
-        setSubmittedSubscription(false);
         onCLose();
       }}
-      onAccept={() => setSubmittedSubscription(true)}
+      onAccept={() => {
+        if (!selectedTraining || !user) return;
+
+        onAccept(selectedTraining.id, user.id);
+      }}
       maxWidth="md"
     >
-      {isSubmittedSubscription ? (
-        <Stack
-          width="100%"
-          height="100%"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <img src={successImage} height="400px" alt="successImage" />
-        </Stack>
-      ) : (
-        <Stack gap="1rem">
-          <TextField
-            label="Фамилия"
-            variant="standard"
-            fullWidth
-            value="Русаков"
-            disabled
-          />
-          <TextField
-            label="Имя"
-            variant="standard"
-            fullWidth
-            value="Никита"
-            disabled
-          />
-          <TextField
-            label="Отчество"
-            variant="standard"
-            fullWidth
-            value="Станиславович"
-            disabled
-          />
-          <TextField
-            label="Почта"
-            variant="standard"
-            fullWidth
-            value="nikitos@mail.ru"
-            disabled
-          />
+      <Stack gap="1rem">
+        <TextField
+          label="ФИО"
+          variant="standard"
+          fullWidth
+          value={user?.username}
+          disabled
+        />
 
-          <Autocomplete
-            value={sessionValue ?? null}
-            onChange={(event, value) => {
-              setSessionValue(value ?? undefined);
-            }}
-            getOptionLabel={(option) => {
-              return `${option.name} | ${option.type}`;
-            }}
-            open={isSessionListOpen}
-            onOpen={() => setSessionListOpen(true)}
-            onClose={() => setSessionListOpen(false)}
-            size="small"
-            options={sessionOptions}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Занятие"
-                InputProps={{
-                  ...params.InputProps,
-                  endAdornment: params.InputProps.endAdornment,
-                }}
-              />
-            )}
-            renderOption={(props, option) => (
-              <List disablePadding key={_.uniqueId()}>
-                {sessionOptions.indexOf(option) === 0 && (
-                  <>
-                    <ListItem>
-                      {['Имя', 'Тип тренировки'].map((keyOf, index) => (
-                        <ListItemText
-                          sx={{ width: '50%', overflow: 'auto' }}
-                          key={_.uniqueId()}
-                        >
-                          <Typography fontWeight="bold">{keyOf}</Typography>
-                        </ListItemText>
-                      ))}
-                    </ListItem>
-                    <Divider />
-                  </>
-                )}
-                <ListItem {...props}>
-                  {['name', 'type'].map((keyOf, index) => (
+        <TextField
+          label="Почта"
+          variant="standard"
+          fullWidth
+          value={user?.email}
+          disabled
+        />
+
+        <Autocomplete
+          value={selectedTraining ?? null}
+          onChange={(event, value) => {
+            setSelectedTraining(value ?? undefined);
+          }}
+          getOptionLabel={(option) => {
+            return `${option.name} | ${option.type}`;
+          }}
+          open={isSessionListOpen}
+          onOpen={() => setSessionListOpen(true)}
+          onClose={() => setSessionListOpen(false)}
+          size="small"
+          options={trainings ?? []}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Занятие"
+              InputProps={{
+                ...params.InputProps,
+                endAdornment: params.InputProps.endAdornment,
+              }}
+            />
+          )}
+          renderOption={(props, option) => (
+            <List disablePadding key={_.uniqueId()}>
+              {trainings?.indexOf(option) === 0 && (
+                <>
+                  <ListItem>
+                    {['Имя', 'Тип тренировки', 'Время'].map((keyOf, index) => (
+                      <ListItemText
+                        sx={{ width: '33%', overflow: 'auto' }}
+                        key={_.uniqueId()}
+                      >
+                        <Typography fontWeight="bold">{keyOf}</Typography>
+                      </ListItemText>
+                    ))}
+                  </ListItem>
+                  <Divider />
+                </>
+              )}
+              <ListItem {...props}>
+                {(['name', 'type', 'date'] as (keyof ITraining)[]).map(
+                  (keyOf, index) => (
                     <ListItemText
                       sx={{ width: '50%', overflow: 'auto' }}
                       key={_.uniqueId()}
                     >
-                      {option[keyOf as keyof ISessionOptions]}
+                      {option[keyOf as keyof ITraining]?.toString()}
                     </ListItemText>
-                  ))}
-                </ListItem>
-                <Divider />
-              </List>
-            )}
-          />
-          <FormControl sx={{ minWidth: 120 }}>
-            <InputLabel id="demo-simple-select-helper-label" size="small">
-              Дата
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-helper-label"
-              id="demo-simple-select-helper"
-              value={dateSelect}
-              label="Дата"
-              onChange={(event) => setDateSelect(event.target.value)}
-              size="small"
-            >
-              <MenuItem value={10}>Понедельник</MenuItem>
-              <MenuItem value={30}>Среда</MenuItem>
-              <MenuItem value={50}>Пятница</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl sx={{ minWidth: 120 }}>
-            <InputLabel id="demo-simple-select-helper-label" size="small">
-              время
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-helper-label"
-              id="demo-simple-select-helper"
-              value={timeSelect}
-              label="время"
-              onChange={(event) => setTimeSelect(event.target.value)}
-              size="small"
-            >
-              <MenuItem value={10}>13:00</MenuItem>
-              <MenuItem value={20}>14:00</MenuItem>
-              <MenuItem value={30}>18:00</MenuItem>
-            </Select>
-          </FormControl>
-        </Stack>
-      )}
+                  ),
+                )}
+              </ListItem>
+              <Divider />
+            </List>
+          )}
+        />
+      </Stack>
     </MainDialog>
   );
 };

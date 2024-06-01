@@ -23,7 +23,10 @@ import Footer from '../../components/feature/Footer';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { logOut, selectAuth } from '../../store/slice/authSlice';
 import { useNavigate } from 'react-router-dom';
-import { useGetUserByIdQuery } from '../../store/api/userApi';
+import {
+  useGetUserByIdQuery,
+  useJoinUserToGroupTrainingMutation,
+} from '../../store/api/userApi';
 import {
   useAddUserToSubscriptionMutation,
   useGetSubscriptionsQuery,
@@ -53,6 +56,11 @@ const HomePage = () => {
     { isError: isSubErrorQuery, isSuccess: isSubSuccessQuery },
   ] = useAddUserToSubscriptionMutation();
 
+  const [
+    joinUserToGroupTraining,
+    { isError: isJoinErrorQuery, isSuccess: isJoinSuccessQuery },
+  ] = useJoinUserToGroupTrainingMutation();
+
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [isOpenSubscriptionDialog, setOpenSubscriptionDialog] =
     useState<boolean>(false);
@@ -65,6 +73,8 @@ const HomePage = () => {
   const [isUserError, setUserError] = useState<boolean>(false);
   const [isSubSuccess, setSubSuccess] = useState<boolean>(false);
   const [isSubError, setSubError] = useState<boolean>(false);
+  const [isJoinError, setJoinError] = useState<boolean>(false);
+  const [isJoinSuccess, setJoinSuccess] = useState<boolean>(false);
 
   const logOutHandler = () => {
     dispatch(logOut());
@@ -74,6 +84,11 @@ const HomePage = () => {
   useEffect(() => {
     setUserSuccess(isUserSuccessQuery);
   }, [isUserSuccessQuery]);
+
+  useEffect(() => {
+    setJoinError(isJoinErrorQuery);
+    setJoinSuccess(isJoinSuccessQuery);
+  }, [isJoinErrorQuery, isJoinSuccessQuery]);
 
   useEffect(() => {
     setUserError(isUserErrorQuery);
@@ -96,6 +111,16 @@ const HomePage = () => {
       navigate('/login');
     }
   }, [isUserError, isUserSuccess, user?.roles]);
+
+  const joinToGroupSessionHandler = (trainingId: number, userId: number) => {
+    joinUserToGroupTraining({
+      trainingId,
+      userId,
+      token: userAuthData.token ?? '',
+    });
+
+    setOpenGroupSessionDialog(false);
+  };
 
   return (
     <Stack>
@@ -206,6 +231,7 @@ const HomePage = () => {
       <GroupSessionDialog
         open={isOpenGroupSessionDialog}
         onCLose={() => setOpenGroupSessionDialog(false)}
+        onAccept={joinToGroupSessionHandler}
       />
       <PersonalSessionDialog
         onCLose={() => setOpenPersonalSessionDialog(false)}
@@ -213,11 +239,12 @@ const HomePage = () => {
       />
       <Footer />
       <Snackbar
-        open={isUserError || isSubError}
+        open={isUserError || isSubError || isJoinError}
         autoHideDuration={3000}
         onClose={() => {
           setUserError(false);
           setSubError(false);
+          setJoinError(false);
         }}
       >
         <Alert severity="error" variant="filled">
@@ -225,11 +252,12 @@ const HomePage = () => {
         </Alert>
       </Snackbar>
       <Snackbar
-        open={isUserSuccess || isSubSuccess}
+        open={isUserSuccess || isSubSuccess || isJoinSuccess}
         autoHideDuration={3000}
         onClose={() => {
           setUserSuccess(false);
           setSubSuccess(false);
+          setJoinSuccess(false);
         }}
       >
         <Alert severity="success" variant="filled">

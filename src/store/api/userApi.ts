@@ -70,6 +70,16 @@ export const userApi = commonApi.injectEndpoints({
         headers: { Authorization: `Bearer ${token}` },
       }),
     }),
+    joinUserToGroupTraining: builder.mutation<
+      void,
+      { userId: number; trainingId: number; token: string }
+    >({
+      query: ({ token, trainingId, userId }) => ({
+        url: `v1/trainings/${trainingId}?userId=${userId}`,
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+    }),
   }),
 });
 
@@ -84,4 +94,5 @@ export const {
   useUpdateUserStatusMutation,
   useGetUsersByRoleQuery,
   useLazyGetUsersByRoleQuery,
+  useJoinUserToGroupTrainingMutation,
 } = userApi;
