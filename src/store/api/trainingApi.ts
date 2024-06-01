@@ -43,6 +43,17 @@ export const trainingApi = commonApi.injectEndpoints({
       }),
       invalidatesTags: ['updateTrainings'],
     }),
+    getTrainingsByUserId: builder.query<
+      ITraining[],
+      { token: string; userId: number }
+    >({
+      query: ({ token, userId }) => ({
+        url: `v1/trainings/user/${userId}`,
+        method: 'GET',
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+      providesTags: ['updateTrainings'],
+    }),
   }),
 });
 
@@ -51,4 +62,6 @@ export const {
   useLazyGetGroupTrainingsQuery,
   useCreateNewTrainingMutation,
   useDeleteTrainingMutation,
+  useGetTrainingsByUserIdQuery,
+  useLazyGetTrainingsByUserIdQuery,
 } = trainingApi;
