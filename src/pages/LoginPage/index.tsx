@@ -3,6 +3,7 @@ import { useUserLoginMutation } from '../../store/api/authApi';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/store';
 import { setUserAuthData } from '../../store/slice/authSlice';
+import { ERoles } from '../../enums/roles';
 
 const LoginPage = () => {
   const [userName, setUserName] = useState<string>('');
@@ -14,6 +15,8 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  const role = userLoginData?.roles ? userLoginData?.roles[0] : undefined;
+
   const onClickLoginHandler = () => {
     if (!userName || !password) return;
 
@@ -23,11 +26,13 @@ const LoginPage = () => {
     });
   };
   useEffect(() => {
-    if (isLoginSuccess && userLoginData) {
-      navigate('/');
+    if (isLoginSuccess && userLoginData && role) {
+      if (role === ERoles.ROLE_USER) navigate('/');
+      else if (role === ERoles.ROLE_ADMIN) navigate('/admin');
+      else navigate('/trainer');
       dispatch(setUserAuthData(userLoginData));
     }
-  }, [dispatch, isLoginSuccess, navigate, userLoginData]);
+  }, [dispatch, isLoginSuccess, navigate, role, userLoginData]);
 
   return (
     <div className="wrapper">
