@@ -1,10 +1,12 @@
 import {
+  Alert,
   Avatar,
   AvatarGroup,
   Box,
   Button,
   IconButton,
   Paper,
+  Snackbar,
   Stack,
   Tab,
   Table,
@@ -16,72 +18,43 @@ import {
   Tabs,
   Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
-import _ from 'lodash';
-import TrainingRow from './components/TrainingRow';
+import React, { useEffect, useState } from 'react';
 import TabPanel from '../../../../components/core/TabPanel';
 import UserCard from '../../../../components/feature/UserCard';
 import { useAppSelector } from '../../../../hooks/store';
 import { selectAuth } from '../../../../store/slice/authSlice';
-import { useGetUserByIdQuery } from '../../../../store/api/userApi';
 import { useGetTrainingsByTrainerIdQuery } from '../../../../store/api/trainingApi';
 import { stringAvatar } from '../../../../utils/stringAvatar';
-import { Delete } from '@mui/icons-material';
 
 const TrainingPlanning = () => {
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [isExpandUsers, setExpandUsers] = useState<boolean>(false);
   const userAuthData = useAppSelector(selectAuth);
-  const {
-    data: trainer,
-    isError: isUserErrorQuery,
-    isSuccess: isUserSuccessQuery,
-  } = useGetUserByIdQuery({
-    userId: userAuthData.id ?? 0,
-    token: userAuthData.token ?? '',
-  });
 
-  const { data: trainings } = useGetTrainingsByTrainerIdQuery(
+  const {
+    data: trainings,
+    isError: isTrainingsErrorQuery,
+    isSuccess: isTrainingsSuccessQuery,
+  } = useGetTrainingsByTrainerIdQuery(
     {
-      trainerId: trainer?.id ?? 0,
+      trainerId: userAuthData?.id ?? 0,
       token: userAuthData.token ?? '',
     },
     {
-      skip: !userAuthData.token && !trainer?.id,
+      skip: !userAuthData.token && !userAuthData?.id,
     },
   );
-  const role = trainer?.roles ? trainer?.roles[0] : undefined;
 
-  const rows = [
-    {
-      name: 'Full Body',
-      date: new Date().toLocaleString(),
-      users: ['Никита Русаков', 'Хуснуриялов Булат'],
-    },
-    {
-      name: 'Super Strong',
-      date: new Date().toLocaleString(),
-      users: [
-        'Никита Русаков',
-        'Хуснуриялов Булат',
-        'Кашапов Руслан',
-        'Галлямов Вадим',
-        'Рубен Малаев',
-      ],
-    },
-    {
-      name: 'Stretch',
-      date: new Date().toLocaleString(),
-      users: [
-        'Никита Русаков',
-        'Хуснуриялов Булат',
-        'Кашапов Руслан',
-        'Галлямов Вадим',
-        'Рубен Малаев',
-      ],
-    },
-  ];
+  const [isTrainingsSuccess, setTrainingsSuccess] = useState<boolean>(false);
+  const [isTrainingsError, setTrainingsError] = useState<boolean>(false);
 
+  useEffect(() => {
+    setTrainingsSuccess(isTrainingsSuccessQuery);
+  }, [isTrainingsSuccessQuery]);
+
+  useEffect(() => {
+    setTrainingsError(isTrainingsErrorQuery);
+  }, [isTrainingsErrorQuery]);
   return (
     <>
       <Typography variant="h5" fontWeight="bold">
@@ -111,11 +84,33 @@ const TrainingPlanning = () => {
               <Table aria-label="a dense table">
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={{ fontWeight: 'bold' }} align="left">
+                    <TableCell
+                      sx={{ fontWeight: 'bold' }}
+                      align="left"
+                      width="25%"
+                    >
                       Дата
                     </TableCell>
-                    <TableCell sx={{ fontWeight: 'bold' }} align="right">
-                      Пользователь
+                    <TableCell
+                      sx={{ fontWeight: 'bold' }}
+                      align="center"
+                      width="25%"
+                    >
+                      Тренер
+                    </TableCell>
+                    <TableCell
+                      sx={{ fontWeight: 'bold' }}
+                      align="center"
+                      width="25%"
+                    >
+                      Дата
+                    </TableCell>
+                    <TableCell
+                      sx={{ fontWeight: 'bold' }}
+                      align="right"
+                      width="25%"
+                    >
+                      Пользователи
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -187,6 +182,28 @@ const TrainingPlanning = () => {
           </Stack>
         </TabPanel>
       </Box>
+      <Snackbar
+        open={isTrainingsError}
+        autoHideDuration={3000}
+        onClose={() => {
+          setTrainingsError(false);
+        }}
+      >
+        <Alert severity="error" variant="filled">
+          Ошибка
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={isTrainingsSuccess}
+        autoHideDuration={3000}
+        onClose={() => {
+          setTrainingsSuccess(false);
+        }}
+      >
+        <Alert severity="success" variant="filled">
+          Успех!
+        </Alert>
+      </Snackbar>
     </>
   );
 };
