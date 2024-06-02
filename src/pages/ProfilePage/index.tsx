@@ -217,7 +217,7 @@ const ProfilePage = () => {
                                   {training?.users?.map((user) => (
                                     <Avatar
                                       key={user.id}
-                                      {...stringAvatar(user.username)}
+                                      {...stringAvatar(user.username + ' ')}
                                     />
                                   ))}
                                 </AvatarGroup>

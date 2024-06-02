@@ -180,7 +180,7 @@ const WeeklySchedule = () => {
                         {training?.users?.map((user) => (
                           <Avatar
                             key={user.id}
-                            {...stringAvatar(user.username)}
+                            {...stringAvatar(user.username + ' U')}
                           />
                         ))}
                       </AvatarGroup>
