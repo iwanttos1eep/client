@@ -1,5 +1,9 @@
 import {
+  Avatar,
+  AvatarGroup,
   Box,
+  Button,
+  IconButton,
   Paper,
   Stack,
   Tab,
@@ -17,9 +21,36 @@ import _ from 'lodash';
 import TrainingRow from './components/TrainingRow';
 import TabPanel from '../../../../components/core/TabPanel';
 import UserCard from '../../../../components/feature/UserCard';
+import { useAppSelector } from '../../../../hooks/store';
+import { selectAuth } from '../../../../store/slice/authSlice';
+import { useGetUserByIdQuery } from '../../../../store/api/userApi';
+import { useGetTrainingsByTrainerIdQuery } from '../../../../store/api/trainingApi';
+import { stringAvatar } from '../../../../utils/stringAvatar';
+import { Delete } from '@mui/icons-material';
 
 const TrainingPlanning = () => {
   const [tabIndex, setTabIndex] = useState<number>(0);
+  const [isExpandUsers, setExpandUsers] = useState<boolean>(false);
+  const userAuthData = useAppSelector(selectAuth);
+  const {
+    data: trainer,
+    isError: isUserErrorQuery,
+    isSuccess: isUserSuccessQuery,
+  } = useGetUserByIdQuery({
+    userId: userAuthData.id ?? 0,
+    token: userAuthData.token ?? '',
+  });
+
+  const { data: trainings } = useGetTrainingsByTrainerIdQuery(
+    {
+      trainerId: trainer?.id ?? 0,
+      token: userAuthData.token ?? '',
+    },
+    {
+      skip: !userAuthData.token && !trainer?.id,
+    },
+  );
+  const role = trainer?.roles ? trainer?.roles[0] : undefined;
 
   const rows = [
     {
@@ -51,25 +82,6 @@ const TrainingPlanning = () => {
     },
   ];
 
-  const individualTrainingSessionRows = [
-    {
-      date: '08 мая 2024, 18:00',
-      user: 'Никита Русаков',
-    },
-    {
-      date: '08 мая 2024, 16:00',
-      user: 'Хуснуриялов Булат',
-    },
-    {
-      date: '08 мая 2024, 14:00',
-      user: 'Александр Соловьёв',
-    },
-    {
-      date: '08 мая 2024, 10:00',
-      user: 'Кашапов Руслан',
-    },
-  ];
-
   return (
     <>
       <Typography variant="h5" fontWeight="bold">
@@ -92,33 +104,8 @@ const TrainingPlanning = () => {
           sx={{ borderRight: 1, borderColor: 'divider' }}
         >
           <Tab label="Групповые тренировки" />
-          <Tab label="Индивидуальные тренировки" />
         </Tabs>
         <TabPanel value={tabIndex} index={0}>
-          <TableContainer component={Paper}>
-            <Table aria-label="a dense table">
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ fontWeight: 'bold' }} align="left">
-                    Занятие
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }} align="center">
-                    Дата
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }} align="right">
-                    Пользователи
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row, index) => (
-                  <TrainingRow row={row} key={index} />
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </TabPanel>
-        <TabPanel value={tabIndex} index={1}>
           <Stack width="100%" height="100%">
             <TableContainer component={Paper}>
               <Table aria-label="a dense table">
@@ -133,16 +120,64 @@ const TrainingPlanning = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {individualTrainingSessionRows.map((row) => (
+                  {trainings?.map((training) => (
                     <TableRow
-                      key={_.uniqueId()}
+                      key={training.id}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
-                      <TableCell width={'50%'} align="left">
-                        {row.date}
+                      <TableCell width={'25%'} align="left">
+                        {training.name}
                       </TableCell>
-                      <TableCell width={'50%'} align="right">
-                        {/* <UserCard userName={row.user} /> */}
+                      <TableCell width={'25%'} align="center">
+                        {training.trainer?.username}
+                      </TableCell>
+                      <TableCell width={'25%'} align="center">
+                        {training.date
+                          ? new Date(training.date).toLocaleDateString(
+                              'ru-RU',
+                              {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                              },
+                            )
+                          : ''}
+                      </TableCell>
+                      <TableCell width={'25%'} align="right">
+                        {isExpandUsers ? (
+                          <Stack
+                            bgcolor="background.paper"
+                            direction="column"
+                            gap="1.5rem"
+                          >
+                            <Button onClick={() => setExpandUsers(false)}>
+                              Свернуть
+                            </Button>
+                            {training?.users?.map((user) => (
+                              <UserCard user={user} />
+                            ))}
+                          </Stack>
+                        ) : (
+                          <AvatarGroup
+                            max={3}
+                            onClick={() => setExpandUsers(true)}
+                            sx={{
+                              cursor: 'pointer',
+                              '.MuiAvatar-root:hover': {
+                                background: 'red',
+                              },
+                            }}
+                          >
+                            {training?.users?.map((user) => (
+                              <Avatar
+                                key={user.id}
+                                {...stringAvatar(user.username)}
+                              />
+                            ))}
+                          </AvatarGroup>
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}
