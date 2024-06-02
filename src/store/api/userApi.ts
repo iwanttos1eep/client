@@ -79,6 +79,7 @@ export const userApi = commonApi.injectEndpoints({
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
       }),
+      invalidatesTags: ['updateTrainings'],
     }),
   }),
 });
